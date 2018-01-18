@@ -1,0 +1,68 @@
+using System;
+using System.Collections.Generic;
+using Orders.Core.Domain.Extensions;
+using Orders.Core.Exceptions;
+
+namespace Orders.Core.Domain
+{
+    public class Order : Entity
+    {
+        private ISet<Item> _items = new HashSet<Item>();
+        public string Name { get; protected set; }
+        public DateTime CreatedAt { get; protected set; }
+        public IEnumerable<Item> Items
+        {
+            get => _items;
+            protected set => _items = new HashSet<Item>(value);
+        }
+
+        protected Order() { }
+
+        public Order(string name) : base()
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new OrderException(ErrorCode.empty_order_name, "Order name can not be empty.");
+            }
+            this.Name = Name;
+            this.CreatedAt = DateTime.UtcNow;
+        }
+
+        public IEnumerable<Item> GetItems(string name)
+        {
+            var items = Items.GetItems(name);
+            if (items is null)
+            {
+                throw new OrderException(ErrorCode.item_not_found, $"No item was found with the given name '{name}'");
+            }
+            return items;
+        }
+
+        public void AddItem(string itemName, string categoryName)
+        {
+            var item = Items.GetItem(itemName, categoryName);
+            if (item is null)
+            {
+                _items.Add(new Item(itemName, new Category(categoryName)));
+                return;
+            }
+            item.Counter.Increase();
+        }
+
+        public void RemoveItem(string itemName, string categoryName)
+        {
+            var item = Items.GetItem(itemName, categoryName);
+            if (item is null)
+            {
+                throw new OrderException(ErrorCode.item_not_found, "Unable to remove unexiting item.");
+            }
+            if (item.Counter.Value is 1)
+            {
+                _items.Remove(item);
+                return;
+            }
+            item.Counter.Decrease();
+        }
+
+    }
+}
