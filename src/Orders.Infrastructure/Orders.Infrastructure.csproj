@@ -3,5 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Orders.Core/Orders.Core.csproj"/>
+  </ItemGroup>
 
 </Project>
