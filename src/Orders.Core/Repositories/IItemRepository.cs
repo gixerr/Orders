@@ -9,8 +9,8 @@ namespace Orders.Core.Repositories
     {
         Task<IEnumerable<Item>> GetAllAsync();
         Task<Item> GetAsync(Guid id);
-        Task<Item> GetAsync(string name);
-        Task AddAsync(string name);
+        Task<IEnumerable<Item>> GetAsync(string name);
+        Task AddAsync(Item item);
         Task UpdateAsync(Guid id);
         Task RemoveAsync(Guid id);
     }

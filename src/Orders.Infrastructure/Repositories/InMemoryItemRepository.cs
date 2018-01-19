@@ -11,34 +11,29 @@ namespace Orders.Infrastructure.Repositories
     {
         private static List<Item> _items = InitializeItems().ToList();
 
-        public Task<IEnumerable<Item>> GetAllAsync()
+        public async Task<IEnumerable<Item>> GetAllAsync()
+            => await Task.FromResult(_items);
+
+        public async Task<Item> GetAsync(Guid id)
+            => await Task.FromResult(_items.SingleOrDefault(i => i.Id == id));
+
+        public async Task<IEnumerable<Item>> GetAsync(string name)
+            => await Task.FromResult(_items.Where(i => i.Name.ToLowerInvariant() == name.ToLowerInvariant()));
+
+        public async Task AddAsync(Item item)
         {
-            throw new NotImplementedException();
+            _items.Add(item);
+            await Task.CompletedTask;
         }
 
-        public Task<Item> GetAsync(Guid id)
+        public async Task UpdateAsync(Guid id)
         {
-            throw new NotImplementedException();
+            await Task.CompletedTask;
         }
 
-        public Task<Item> GetAsync(string name)
+        public async Task RemoveAsync(Guid id)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task AddAsync(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task RemoveAsync(Guid id)
-        {
-            throw new NotImplementedException();
+            _items.Remove(await GetAsync(id));
         }
 
         private static IEnumerable<Item> InitializeItems()

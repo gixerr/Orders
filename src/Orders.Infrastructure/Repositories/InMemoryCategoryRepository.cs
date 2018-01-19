@@ -12,34 +12,29 @@ namespace Orders.Infrastructure.Repositories
         private static List<Category> _categories = InitializeCategories().ToList();
         public static List<Category> Categories { get; } = _categories;
 
-        public Task<IEnumerable<Category>> GetAllAsync()
+        public async Task<IEnumerable<Category>> GetAllAsync() 
+            => await Task.FromResult(_categories);
+
+        public async Task<Category> GetAsync(Guid id) 
+            => await Task.FromResult(_categories.SingleOrDefault(c => c.Id == id));
+
+        public async Task<Category> GetAsync(string name)
+            => await Task.FromResult(_categories.SingleOrDefault(c => c.Name.ToLowerInvariant() == name.ToLowerInvariant()));
+
+        public async Task AddAsync(Category category)
         {
-            throw new NotImplementedException();
+            _categories.Add(category);
+            await Task.CompletedTask;
         }
 
-        public Task<Category> GetAsync(Guid id)
+        public async Task UpdateAsync(Guid id)
         {
-            throw new NotImplementedException();
+            await Task.CompletedTask;
         }
 
-        public Task<Category> GetAsync(string name)
+        public async Task RemoveAsync(Guid id)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task AddAsync(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task RemoveAsync(Guid id)
-        {
-            throw new NotImplementedException();
+            _categories.Remove(await GetAsync(id));
         }
 
         private static IEnumerable<Category> InitializeCategories()

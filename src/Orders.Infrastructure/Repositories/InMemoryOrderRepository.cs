@@ -18,14 +18,14 @@ namespace Orders.Infrastructure.Repositories
             => Task.FromResult(_orders.SingleOrDefault(o => o.Id == id));
 
         public Task<Order> GetAsync(string name)
-             => Task.FromResult(_orders.SingleOrDefault(o => o.Name.ToLowerInvariant() == name.ToLowerInvariant()));
+            => Task.FromResult(_orders.SingleOrDefault(o => o.Name.ToLowerInvariant() == name.ToLowerInvariant()));
 
         public async Task AddAsync(Order order)
         {
             _orders.Add(order);
             await Task.CompletedTask;
         }
-        
+
         public async Task UpdateAsync(Guid id)
         {
             await Task.CompletedTask;
@@ -38,7 +38,7 @@ namespace Orders.Infrastructure.Repositories
 
         private static IEnumerable<Order> InitializeOrders()
         {
-            for(int i =0; i < 10; i++)
+            for (int i = 0; i < 10; i++)
             {
                 yield return new Order($"Order-{i+1}");
             }

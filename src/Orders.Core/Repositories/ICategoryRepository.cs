@@ -10,7 +10,7 @@ namespace Orders.Core.Repositories
         Task<IEnumerable<Category>> GetAllAsync();
         Task<Category> GetAsync(Guid id);
         Task<Category> GetAsync(string name);
-        Task AddAsync(string name);
+        Task AddAsync(Category category);
         Task UpdateAsync(Guid id);
         Task RemoveAsync(Guid id);
     }
