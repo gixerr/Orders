@@ -33,7 +33,7 @@ namespace Orders.Core.Domain
             var items = Items.GetItems(name);
             if (items is null)
             {
-                throw new OrderException(ErrorCode.item_not_found, $"No item was found with the given name '{name}'");
+                throw new OrderException(ErrorCode.item_not_found, $"Item with given name '{name}' not found");
             }
             return items;
         }
@@ -54,7 +54,7 @@ namespace Orders.Core.Domain
             var item = Items.GetItem(itemName, categoryName);
             if (item is null)
             {
-                throw new OrderException(ErrorCode.item_not_found, "Unable to remove unexiting item.");
+                throw new OrderException(ErrorCode.item_not_found, "Unable to remove nonexiting item.");
             }
             if (item.Counter.Value is 1)
             {
@@ -63,6 +63,5 @@ namespace Orders.Core.Domain
             }
             item.Counter.Decrease();
         }
-
     }
 }
