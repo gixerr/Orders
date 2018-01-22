@@ -1,0 +1,65 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Orders.Core.Domain;
+using Orders.Core.Exceptions;
+using Orders.Core.Repositories;
+
+namespace Orders.Infrastructure.Repositories.Extensions
+{
+    public static class ItemRepositoryExtensions
+    {
+        public static async Task<IEnumerable<Item>> GetAllOrFailAsync(this IItemRepository itemRepository)
+        {
+            var items = await itemRepository.GetAllAsync();
+            if (items is null)
+            {
+                throw new OrderException(ErrorCode.item_not_found, "No items available.");
+            }
+
+            return items;
+        }
+        public static async Task<Item> GetOrFailAsync(this IItemRepository itemRepository, Guid id)
+        {
+            var item = await itemRepository.GetAsync(id);
+            if (item is null)
+            {
+                throw new OrderException(ErrorCode.item_not_found, $"Item with given id '{id}' not found.");
+            }
+
+            return item;
+        }
+
+        public static async Task<IEnumerable<Item>> GetOrFailAsync(this IItemRepository itemRepository, string name)
+        {
+            var items = await itemRepository.GetAsync(name);
+            if (items is null)
+            {
+                throw new OrderException(ErrorCode.item_not_found, $"Item with given name '{name}' not found.");
+            }
+
+            return items;
+        }
+
+        public static async Task AddOrFailAsync(this IItemRepository itemRepository, string name, Category category)
+        {
+            var items = await itemRepository.GetAsync(name);          
+            if (!(items is null) && items.Any(i => i.Category.Name.ToLowerInvariant() == category.Name.ToLowerInvariant()))
+            {
+               throw new OrderException(ErrorCode.item_already_exists, $"Item with given name '{name}' and category '{category.Name}' already exists");
+            }
+            await itemRepository.AddAsync(new Item(name, category));
+        }
+
+        public static async Task RemoveOrFailAsync(this IItemRepository itemRepository, Guid id)
+        {
+            var item = await itemRepository.GetAsync(id);
+            if (item is null)
+            {
+                throw new OrderException(ErrorCode.order_not_found, $"Order with given id '{id}' not found. Unable to remove nonexiting order.");
+            }
+            await itemRepository.RemoveAsync(id);
+        }
+    }
+}
