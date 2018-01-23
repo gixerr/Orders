@@ -39,8 +39,7 @@ namespace Orders.Infrastructure.Services
             await _itemReopository.AddOrFailAsync(itemName, category);
         }
 
-        public Task RemoveAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task RemoveAsync(Guid id)
+            => await _itemReopository.RemoveOrFailAsync(id);
     }
+}
