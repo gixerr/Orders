@@ -1,0 +1,27 @@
+using System;
+using System.Threading.Tasks;
+using Autofac;
+using Orders.Infrastructure.Commads.Interfaces;
+
+namespace Orders.Infrastructure.Commands.Handlers
+{
+    public class CommandDispatcher : ICommandDispatcher
+    {
+        private readonly IComponentContext _context;
+
+        public CommadDispatcher(IComponentContext context)
+        {
+            _context = context;
+        }
+
+        public async Task DispatchAsync<T>(T command) where T : ICommand
+        {
+            if (command == null)
+            {
+                throw new ArgumentNullException(nameof(command), $"Commad '{typeof(T).Name} can not be null.");
+            }
+
+            await _context.Resolve<ICommandHandler<T>>().HandleAsync(command);
+        }
+    }
+}

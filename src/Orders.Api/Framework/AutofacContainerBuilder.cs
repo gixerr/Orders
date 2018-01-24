@@ -3,6 +3,7 @@ using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 using Orders.Core.Repositories;
+using Orders.Infrastructure.IoC.Modules;
 using Orders.Infrastructure.Mappings;
 using Orders.Infrastructure.Repositories;
 using Orders.Infrastructure.Services;
@@ -26,13 +27,14 @@ namespace Orders.Api.Framework
             var builder = new ContainerBuilder();
             builder.Populate(_services);
 
-            builder.RegisterInstance(AutoMapperConfig.GetMapper()).SingleInstance();
             builder.RegisterType<InMemoryOrderRepository>().As<IOrderRepository>().SingleInstance();
             builder.RegisterType<InMemoryCategoryRepository>().As<ICategoryRepository>().SingleInstance();
             builder.RegisterType<InMemoryItemRepository>().As<IItemRepository>().SingleInstance();
             builder.RegisterType<OrderService>().As<IOrderService>().InstancePerLifetimeScope();
             builder.RegisterType<CategoryService>().As<ICategoryService>().InstancePerLifetimeScope();
             builder.RegisterType<ItemService>().As<IItemService>().InstancePerLifetimeScope();
+            builder.RegisterInstance(AutoMapperConfig.GetMapper()).SingleInstance();
+            builder.RegisterModule<CommandModule>();
 
             return builder.Build();
         }
