@@ -1,5 +1,5 @@
 using Autofac;
-using Orders.Infrastructure.Commads.Interfaces;
+using Orders.Infrastructure.Commands.Interfaces;
 using Orders.Infrastructure.Commands.Handlers;
 
 namespace Orders.Infrastructure.IoC.Modules

@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Autofac;
-using Orders.Infrastructure.Commads.Interfaces;
+using Orders.Infrastructure.Commands.Interfaces;
 
 namespace Orders.Infrastructure.Commands.Handlers
 {
@@ -9,7 +9,7 @@ namespace Orders.Infrastructure.Commands.Handlers
     {
         private readonly IComponentContext _context;
 
-        public CommadDispatcher(IComponentContext context)
+        public CommandDispatcher(IComponentContext context)
         {
             _context = context;
         }

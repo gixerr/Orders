@@ -1,4 +1,4 @@
-namespace Orders.Infrastructure.Commads
+namespace Orders.Infrastructure.Commands
 {
     public interface ICommand
     {

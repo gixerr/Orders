@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace Orders.Infrastructure.Commads.Interfaces
+namespace Orders.Infrastructure.Commands.Interfaces
 {
     public interface ICommandDispatcher
     {
