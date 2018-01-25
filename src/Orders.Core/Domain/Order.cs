@@ -24,7 +24,7 @@ namespace Orders.Core.Domain
             {
                 throw new OrderException(ErrorCode.empty_order_name, "Order name can not be empty.");
             }
-            this.Name = Name;
+            this.Name = name;
             this.CreatedAt = DateTime.UtcNow;
         }
 
