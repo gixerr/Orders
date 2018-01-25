@@ -1,8 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
-
+  <ItemGroup>
+    <ProjectReference Include="../../src/Orders.Core/Orders.Core.csproj"/>
+    <ProjectReference Include="../../src/Orders.Infrastructure/Orders.Infrastructure.csproj"/>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="5.0.0-rc0002"/>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.6.0-preview-20180109-01"/>
+    <PackageReference Include="Moq" Version="4.8.1"/>
+    <PackageReference Include="xunit" Version="2.3.1"/>
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1"/>
+  </ItemGroup>
 </Project>
