@@ -1,12 +1,12 @@
 using Orders.Infrastructure.Services.Interfaces;
 
-namespace Orders.Infrastructure.Commands.Handlers
+namespace Orders.Infrastructure.Handlers
 {
     public abstract class ServiceHandler
     {
         protected readonly IOrderService _orderService;
         protected readonly ICategoryService _categoryService;
-        protected readonly IItemService _itemservice;
+        protected readonly IItemService _itemService;
 
         protected ServiceHandler(IOrderService orderService)
         {
@@ -20,7 +20,7 @@ namespace Orders.Infrastructure.Commands.Handlers
 
         protected ServiceHandler(IItemService itemService)
         {
-            _itemservice = itemService;
+            _itemService = itemService;
         } 
     }
 }

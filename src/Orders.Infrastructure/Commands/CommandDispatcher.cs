@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Autofac;
 using Orders.Infrastructure.Commands.Interfaces;
 
-namespace Orders.Infrastructure.Commands.Handlers
+namespace Orders.Infrastructure.Commands
 {
     public class CommandDispatcher : ICommandDispatcher
     {
