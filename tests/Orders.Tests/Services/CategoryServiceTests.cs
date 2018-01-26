@@ -106,7 +106,7 @@ namespace Orders.Tests.Services
             var categoryRepositoryMock = new Mock<ICategoryRepository>();
             var mapperMock = new Mock<IMapper>();
             var categoryService = new CategoryService(categoryRepositoryMock.Object, mapperMock.Object);
-            var category = new Category("Category1");
+            var category = new Category("NewCategory");
 
             await categoryService.AddAsync(category.Name);
 
@@ -124,7 +124,7 @@ namespace Orders.Tests.Services
 
             try
             {
-                await categoryRepository.AddAsync(category);
+                await categoryService.AddAsync(category.Name);
             }
             catch (OrderException oe)
             {

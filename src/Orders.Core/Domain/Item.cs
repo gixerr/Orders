@@ -20,7 +20,7 @@ namespace Orders.Core.Domain
             {
                 throw new OrderException(ErrorCode.empty_item_name, "Item name can not be empty.");
             }
-            this.Name = Name;
+            this.Name = name;
             this.Category = category;
             this.Counter = new Counter();
             this.CreatedAt = DateTime.UtcNow;

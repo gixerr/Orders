@@ -43,6 +43,7 @@ namespace Orders.Infrastructure.Repositories
                 if (i < 5)
                 {
                     yield return new Item($"Item-{i + 1}", InMemoryCategoryRepository.Categories[i]);
+                    continue;
                 }
                 yield return new Item($"Item-{i - 4}", InMemoryCategoryRepository.Categories[i]);
             }

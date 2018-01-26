@@ -57,7 +57,7 @@ namespace Orders.Infrastructure.Repositories.Extensions
             var item = await itemRepository.GetAsync(id);
             if (item is null)
             {
-                throw new OrderException(ErrorCode.order_not_found, $"Order with given id '{id}' not found. Unable to remove nonexiting order.");
+                throw new OrderException(ErrorCode.item_not_found, $"Item with given id '{id}' not found. Unable to remove nonexiting item.");
             }
             await itemRepository.RemoveAsync(id);
         }

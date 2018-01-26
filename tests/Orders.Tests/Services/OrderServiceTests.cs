@@ -106,7 +106,7 @@ namespace Orders.Tests.Services
             var orderRepositoryMock = new Mock<IOrderRepository>();
             var mapperMock = new Mock<IMapper>();
             var orderService = new OrderService(orderRepositoryMock.Object, mapperMock.Object);
-            var order = new Order("Order1");
+            var order = new Order("NewOrder");
 
             await orderService.AddAsync(order.Name);
 
@@ -118,13 +118,13 @@ namespace Orders.Tests.Services
         public async Task adding_exinsting_order_to_in_memory_repository_should_thow_exception()
         {
             var orderRepository = new InMemoryOrderRepository();
-            var mapper = AutoMapperConfig.GetMapper();
-            var orderService = new OrderService(orderRepository, mapper);
+            var mapperMock = new Mock<IMapper>();
+            var orderService = new OrderService(orderRepository, mapperMock.Object);
             var order = new Order("Order-7");
 
             try
             {
-                await orderRepository.AddAsync(order);
+                await orderService.AddAsync(order.Name);
             }
             catch (OrderException oe)
             {
@@ -154,9 +154,9 @@ namespace Orders.Tests.Services
         [Fact]
         public async Task get_async_on_removed_order_should_throw_exception()
         {
-            var orderRepository = new InMemoryOrderRepository();
+            var itemRepository = new InMemoryOrderRepository();
             var mapper = AutoMapperConfig.GetMapper();
-            var orderService = new OrderService(orderRepository, mapper);
+            var orderService = new OrderService(itemRepository, mapper);
             
             var orderDto = await orderService.GetAsync("Order-5");
             await orderService.RemoveAsync(orderDto.Id);
