@@ -41,7 +41,7 @@ namespace Orders.Infrastructure.Repositories
         {
             for (int i = 0; i < 10; i++)
             {
-                yield return new Category($"Category{i+1}");
+                yield return new Category($"Category-{i+1}");
             }
         }
 
