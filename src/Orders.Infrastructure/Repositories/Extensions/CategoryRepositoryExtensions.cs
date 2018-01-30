@@ -14,7 +14,7 @@ namespace Orders.Infrastructure.Repositories.Extensions
             var categories = await categoryRepository.GetAllAsync();
             if (categories is null)
             {
-                throw new OrderException(ErrorCode.category_not_found, "No orders available.");
+                throw new OrderException(ErrorCode.category_not_found, "No categories available.");
             }
 
             return categories;

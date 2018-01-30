@@ -149,7 +149,7 @@ namespace Orders.Tests.Services
         }
 
         [Fact]
-        public void removeing_nonexisting_category_should_throw_an_exception()
+        public void removing_nonexisting_category_should_throw_an_exception()
         {
             var categoryService = new CategoryService(_categoryRepositoryMock.Object, _mapperMock.Object);
             var category = _fixture.Create<Category>();

@@ -1,6 +1,6 @@
 using Autofac;
+using Orders.Infrastructure.Commands;
 using Orders.Infrastructure.Commands.Interfaces;
-using Orders.Infrastructure.Commands.Handlers;
 
 namespace Orders.Infrastructure.IoC.Modules
 {

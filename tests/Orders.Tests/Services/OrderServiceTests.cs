@@ -46,7 +46,7 @@ namespace Orders.Tests.Services
             Func<Task> getAllOrders = async () => await orderService.GetAllAsync();
 
             var expectedExcepion = getAllOrders.ShouldThrow<OrderException>();
-            expectedExcepion.And.ErrorCode.ShouldAllBeEquivalentTo(ErrorCode.order_not_found);
+            expectedExcepion.And.ErrorCode.ShouldBeEquivalentTo(ErrorCode.order_not_found);
             expectedExcepion.And.Message.ShouldBeEquivalentTo("No orders available.");
         }
 
@@ -150,7 +150,7 @@ namespace Orders.Tests.Services
         }
 
         [Fact]
-        public void removeing_nonexisting_order_should_throw_an_exception()
+        public void removing_nonexisting_order_should_throw_an_exception()
         {
             var orderService = new OrderService(_orderRepositoryMock.Object, _mapperMock.Object);
             var order = _fixture.Create<Order>();
