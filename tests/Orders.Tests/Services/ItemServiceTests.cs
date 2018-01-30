@@ -1,14 +1,14 @@
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
 using Moq;
 using Orders.Core.Domain;
 using Orders.Core.Exceptions;
 using Orders.Core.Repositories;
-using Orders.Infrastructure.Mappings;
-using Orders.Infrastructure.Repositories;
+using Orders.Infrastructure.Dtos;
 using Orders.Infrastructure.Services;
 using Xunit;
 
@@ -16,172 +16,176 @@ namespace Orders.Tests.Services
 {
     public class ItemServiceTests
     {
+        private readonly Mock<IItemRepository> _itemRepositoryMock;
+        private readonly Mock<ICategoryRepository> _categoryRepositoryMock;
+        private readonly Mock<IMapper> _mapperMock;
+        private readonly Fixture _fixture;
+
+        public ItemServiceTests()
+        {
+            _itemRepositoryMock = new Mock<IItemRepository>();
+            _categoryRepositoryMock = new Mock<ICategoryRepository>();
+            _mapperMock = new Mock<IMapper>();
+            _fixture = new Fixture();
+        }
+
         [Fact]
         public async Task get_all_async_should_invoke_get_all_async_on_repository()
         {
-            var itemRepositoryMock = new Mock<IItemRepository>();
-            var categoryRepositoryMock = new Mock<ICategoryRepository>();
-            var mapperMock = new Mock<IMapper>();
+            var itemService = new ItemService(_itemRepositoryMock.Object, _categoryRepositoryMock.Object, _mapperMock.Object);
 
-            var itemService = new ItemService(itemRepositoryMock.Object, categoryRepositoryMock.Object, mapperMock.Object);
             await itemService.GetAllAsync();
 
-            itemRepositoryMock.Verify(x => x.GetAllAsync(), Times.Once);
+            _itemRepositoryMock.Verify(x => x.GetAllAsync(), Times.Once);
         }
 
         [Fact]
-        public async Task get_async_by_name_should_return_existing_items_with_id_from_in_memory_repository()
+        public void get_all_async_should_throw_an_exception_when_repository_is_empty()
         {
-            var itemRepository = new InMemoryItemRepository();
-            var categoryRepository = new InMemoryCategoryRepository();
-            var mapper = AutoMapperConfig.GetMapper();
-            var itemService = new ItemService(itemRepository, categoryRepository, mapper);
+            _itemRepositoryMock.Setup(x => x.GetAllAsync()).ReturnsAsync((IEnumerable<Item>) null);
+            var itemService = new ItemService(_itemRepositoryMock.Object,_categoryRepositoryMock.Object ,_mapperMock.Object);
 
-            var itemDtoList = await itemService.GetAsync("Item-1");
+            Func<Task> getAllItems = async () => await itemService.GetAllAsync();
 
-            itemDtoList.All(x => x.Id != Guid.Empty).Should().BeTrue();
+            var expectedExcepion = getAllItems.ShouldThrow<OrderException>();
+            expectedExcepion.And.ErrorCode.ShouldBeEquivalentTo(ErrorCode.item_not_found);
+            expectedExcepion.And.Message.ShouldBeEquivalentTo("No items available.");
         }
 
         [Fact]
-        public async Task get_async_by_name_should_return_existing_items_with_given_name_from_in_memory_repository()
+        public async Task get_async_by_id_should_invoke_gat_async_on_repository()
         {
-            var itemRepository = new InMemoryItemRepository();
-            var categoryRepository = new InMemoryCategoryRepository();
-            var mapper = AutoMapperConfig.GetMapper();
-            var itemService = new ItemService(itemRepository, categoryRepository, mapper);
+            var item = _fixture.Create<Item>();
+            var itemDto = _fixture.Create<ItemDto>();
+            _itemRepositoryMock.Setup(x => x.GetAsync(item.Id)).ReturnsAsync(item);
+            _mapperMock.Setup(x => x.Map<ItemDto>(item)).Returns(itemDto);
+            var itemService = new ItemService(_itemRepositoryMock.Object, _categoryRepositoryMock.Object,
+                _mapperMock.Object);
 
-            var itemDtoList = await itemService.GetAsync("Item-2");
+            var expectedItemDto = await itemService.GetAsync(item.Id);
 
-            itemDtoList.All(x => x.Name == "Item-2").Should().BeTrue();
+            expectedItemDto.Should().NotBeNull();
+            _itemRepositoryMock.Verify(x => x.GetAsync(item.Id), Times.Once);
+            _mapperMock.Verify(x => x.Map<ItemDto>(item));
         }
 
         [Fact]
-        public async Task get_async_by_name_should_throw_exception_when_item_with_given_name_not_exist()
+        public void get_async_by_id_should_throw_an_exception_when_item_with_given_id_not_exist()
         {
-            var itemRepositoryMock = new Mock<IItemRepository>();
-            var categoryRepositoryMock = new Mock<ICategoryRepository>();
-            var mapperMock = new Mock<IMapper>();
-            var itemService = new ItemService(itemRepositoryMock.Object, categoryRepositoryMock.Object, mapperMock.Object);
+            var item = _fixture.Create<Item>();
+            var itemService = new ItemService(_itemRepositoryMock.Object, _categoryRepositoryMock.Object, _mapperMock.Object);
 
-            try
-            {
-                var orderDto = await itemService.GetAsync("FakeItem");
-            }
-            catch (OrderException oe)
-            {
-                oe.ErrorCode.Should().BeEquivalentTo(ErrorCode.item_not_found);
-                oe.Message.Should().BeEquivalentTo($"Item with given name 'FakeItem' not found.");
-            }
+            Func<Task> getItem = async () => await itemService.GetAsync(item.Id);
+
+            var expectedExcepion = getItem.ShouldThrow<OrderException>();
+            expectedExcepion.And.ErrorCode.ShouldBeEquivalentTo(ErrorCode.item_not_found);
+            expectedExcepion.And.Message.ShouldBeEquivalentTo($"Item with given id '{item.Id}' not found.");
         }
 
         [Fact]
-        public async Task get_async_by_id_should_return_existing_item_with_given_id_from_in_memory_repository()
+        public async Task get_async_by_name_should_invoke_get_async_on_repository()
         {
-            var itemRepository = new InMemoryItemRepository();
-            var categoryRepository = new InMemoryCategoryRepository();
-            var mapper = AutoMapperConfig.GetMapper();
-            var itemService = new ItemService(itemRepository, categoryRepository, mapper);
+            var item = _fixture.Create<Item>();
+            var items = _fixture.Create<List<Item>>();
+            var itemDtos = _fixture.Create<List<ItemDto>>();
+            _itemRepositoryMock.Setup(x => x.GetAsync(item.Name)).ReturnsAsync(items);
+            _mapperMock.Setup(x => x.Map<IEnumerable<ItemDto>>(items)).Returns(itemDtos);
+            var itemService = new ItemService(_itemRepositoryMock.Object, _categoryRepositoryMock.Object,
+                _mapperMock.Object);
 
-            var itemDtoList = await itemService.GetAsync("Item-3");
-            var itemDto = itemDtoList.FirstOrDefault(x => x.Name == "Item-3");
-            var itemDtoById = await itemService.GetAsync(itemDto.Id);
+            var expectedItemsDto = await itemService.GetAsync(item.Name);
 
-            itemDtoById.Id.Should().Be(itemDto.Id);
+            expectedItemsDto.Should().NotBeNull();
+            _itemRepositoryMock.Verify(x => x.GetAsync(item.Name), Times.Once);
+            _mapperMock.Verify(x => x.Map<IEnumerable<ItemDto>>(items));
         }
 
         [Fact]
-        public async Task get_async_by_id_should_throw_exception_when_item_with_given_id_not_exist()
+        public void get_async_by_name_should_throw_an_exception_when_item_with_given_name_not_exist()
         {
-            var itemRepositoryMock = new Mock<IItemRepository>();
-            var categoryRepositoryMock = new Mock<ICategoryRepository>();
-            var mapperMock = new Mock<IMapper>();
-            var orderService = new ItemService(itemRepositoryMock.Object, categoryRepositoryMock.Object, mapperMock.Object);
+            
+            var item = _fixture.Create<Item>();
+            _itemRepositoryMock.Setup(x => x.GetAsync(item.Name)).ReturnsAsync((IEnumerable<Item>)null);
+            var itemService = new ItemService(_itemRepositoryMock.Object, _categoryRepositoryMock.Object, _mapperMock.Object);
+            
+            Func<Task> getItem = async () => await itemService.GetAsync(item.Name);
 
-            try
-            {
-                var itemDto = await orderService.GetAsync(Guid.Empty);
-            }
-            catch (OrderException oe)
-            {
-                oe.ErrorCode.Should().BeEquivalentTo(ErrorCode.item_not_found);
-                oe.Message.Should().BeEquivalentTo($"Item with given id '{Guid.Empty}' not found.");
-            }
+            var expectedExcepion = getItem.ShouldThrow<OrderException>();
+            expectedExcepion.And.ErrorCode.ShouldBeEquivalentTo(ErrorCode.item_not_found);
+            expectedExcepion.And.Message.ShouldBeEquivalentTo($"Item with given name '{item.Name}' not found.");
         }
 
         [Fact]
-        public async Task add_async_should_invoke_add_async_on_repository()
+        public async Task adding_item_with_unique_name_should_invoke_add_async_on_repository()
         {
-            var itemRepositoryMock = new Mock<IItemRepository>();
-            var categoryRepository = new InMemoryCategoryRepository();
-            var mapperMock = new Mock<IMapper>();
-            var itemService = new ItemService(itemRepositoryMock.Object, categoryRepository, mapperMock.Object);
-            var item = new Item("NewItem", new Category("Category-4"));
+            var item = _fixture.Create<Item>();
+            var category = _fixture.Create<Category>();
+            var itemService = new ItemService(_itemRepositoryMock.Object, _categoryRepositoryMock.Object, _mapperMock.Object);
+            _itemRepositoryMock.Setup(x => x.GetAsync(item.Name)).ReturnsAsync((IEnumerable<Item>)null);
+            _categoryRepositoryMock.Setup(x => x.GetAsync(category.Name)).ReturnsAsync(category);
+            
+            await itemService.AddAsync(item.Name, category.Name);
 
-            await itemService.AddAsync(item.Name, item.Category.Name);
-
-            itemRepositoryMock.Verify(x => x.AddAsync(It.IsAny<Item>()), Times.Once);
+            _itemRepositoryMock.Verify(x => x.AddAsync(It.IsAny<Item>()), Times.Once);
         }
 
         [Fact]
-        public async Task adding_exinsting_item_to_in_memory_repository_should_thow_exception()
+        public async Task adding_item_with_existing_name_but_with_different_category_should_invoke_add_async_on_repository()
         {
-            var itemRepository = new InMemoryItemRepository();
-            var categoryRepository = new InMemoryCategoryRepository();
-            var mapperMock = new Mock<IMapper>();
-            var itemService = new ItemService(itemRepository, categoryRepository, mapperMock.Object);
-            var item = new Item("Item-5", new Category("Category-5"));
+            var item = _fixture.Create<Item>();
+            var category = _fixture.Create<Category>();
+            var items = _fixture.Create<List<Item>>();
+            var itemService = new ItemService(_itemRepositoryMock.Object, _categoryRepositoryMock.Object, _mapperMock.Object);
+            _itemRepositoryMock.Setup(x => x.GetAsync(item.Name)).ReturnsAsync(items);
+            _categoryRepositoryMock.Setup(x => x.GetAsync(category.Name)).ReturnsAsync(category);
 
-            try
-            {
-                await itemService.AddAsync(item.Name, item.Category.Name);
-            }
-            catch (OrderException oe)
-            {
-                oe.ErrorCode.Should().BeEquivalentTo(ErrorCode.item_already_exists);
-                oe.Message.Should().BeEquivalentTo($"Item with given name '{item.Name}' and category '{item.Category.Name}' already exists");
-            }
+            await itemService.AddAsync(item.Name, category.Name);
+
+            _itemRepositoryMock.Verify(x => x.AddAsync(It.IsAny<Item>()), Times.Once);
         }
 
         [Fact]
-        public async Task trying_to_remove_nonexisting_item_should_throw_exception()
+        public void adding_exinsting_item_should_thow_an_exception()
         {
-            var itemRepositoryMock = new Mock<IItemRepository>();
-            var categoryRepositoryMock = new Mock<ICategoryRepository>();
-            var mapperMock = new Mock<IMapper>();
-            var itemService = new ItemService(itemRepositoryMock.Object, categoryRepositoryMock.Object, mapperMock.Object);
+            var items = _fixture.Create<List<Item>>();
+            var existingItem = items[0];
+            var existingCategory = items[0].Category;
 
-            try
-            {
-                await itemService.RemoveAsync(Guid.Empty);
-            }
-            catch (OrderException oe)
-            {
-                oe.ErrorCode.Should().BeEquivalentTo(ErrorCode.item_not_found);
-                oe.Message.Should().BeEquivalentTo($"Item with given id '{Guid.Empty}' not found. Unable to remove nonexiting item.");
-            }
+            var itemService = new ItemService(_itemRepositoryMock.Object, _categoryRepositoryMock.Object, _mapperMock.Object);
+            _itemRepositoryMock.Setup(x => x.GetAsync(existingItem.Name)).ReturnsAsync(items);
+            _categoryRepositoryMock.Setup(x => x.GetAsync(existingCategory.Name)).ReturnsAsync(existingCategory);
+           
+            Func<Task> addExistingItem = async () => await itemService.AddAsync(existingItem.Name, existingCategory.Name);
+
+            var expectedException = addExistingItem.ShouldThrow<OrderException>();
+            expectedException.And.ErrorCode.ShouldBeEquivalentTo(ErrorCode.item_already_exists);
+            expectedException.And.Message.ShouldBeEquivalentTo($"Item with given name '{existingItem.Name}' and category '{existingCategory.Name}' already exists");
         }
 
         [Fact]
-        public async Task get_async_on_removed_item_should_throw_exception()
+        public async Task remove_async_should_invoke_remove_async_on_repository()
         {
-            var itemRepository = new InMemoryItemRepository();
-            var categoryRepositoryMock = new Mock<InMemoryCategoryRepository>();
-            var mapper = AutoMapperConfig.GetMapper();
-            var itemService = new ItemService(itemRepository, categoryRepositoryMock.Object, mapper);
+            var itemService = new ItemService(_itemRepositoryMock.Object, _categoryRepositoryMock.Object, _mapperMock.Object);
+            var item = _fixture.Create<Item>();
+            _itemRepositoryMock.Setup((x => x.GetAsync(item.Id))).ReturnsAsync(item);
 
-            var itemDtoList = await itemService.GetAsync("Item-2");
-            var itemDto = itemDtoList.FirstOrDefault(x => x.Name == "Item-2");
-            await itemService.RemoveAsync(itemDto.Id);
+            await itemService.RemoveAsync(item.Id);
 
-            try
-            {
-                await itemService.GetAsync("Item-2");
-            }
-            catch (OrderException oe)
-            {
-                oe.ErrorCode.Should().BeEquivalentTo(ErrorCode.item_not_found);
-                oe.Message.Should().BeEquivalentTo($"Item with given name '{itemDto.Name}' not found.");
-            }
+            _itemRepositoryMock.Verify(x => x.RemoveAsync(item.Id), Times.Once);
         }
+
+        [Fact]
+        public void removing_nonexisting_order_should_throw_an_exception()
+        {
+            var itemService = new ItemService(_itemRepositoryMock.Object, _categoryRepositoryMock.Object, _mapperMock.Object);
+            var item = _fixture.Create<Item>();
+
+            Func<Task> removeItem = async () => await itemService.RemoveAsync(item.Id);
+
+            var expectedException = removeItem.ShouldThrow<OrderException>();
+            expectedException.And.ErrorCode.ShouldBeEquivalentTo(ErrorCode.item_not_found);
+            expectedException.And.Message.ShouldBeEquivalentTo($"Item with given id '{item.Id}' not found. Unable to remove nonexiting item.");
+        }
+
     }
 }
