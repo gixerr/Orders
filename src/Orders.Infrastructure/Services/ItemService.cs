@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Orders.Core.Domain;
-using Orders.Core.Exceptions;
 using Orders.Core.Repositories;
 using Orders.Infrastructure.Dtos;
 using Orders.Infrastructure.Repositories.Extensions;
@@ -33,10 +30,10 @@ namespace Orders.Infrastructure.Services
         public async Task<IEnumerable<ItemDto>> GetAsync(string name)
             => (await _itemReopository.GetOrFailAsync(name)).Dto(_mapper);
 
-        public async Task AddAsync(string itemName, string categoryName)
+        public async Task AddAsync(string itemName, decimal price, string categoryName)
         {
             var category = await _categoryRepository.GetOrFailAsync(categoryName);
-            await _itemReopository.AddOrFailAsync(itemName, category);
+            await _itemReopository.AddOrFailAsync(itemName, price, category);
         }
 
         public async Task RemoveAsync(Guid id)

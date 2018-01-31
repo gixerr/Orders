@@ -2,7 +2,12 @@ namespace Orders.Core.Domain
 {
     public class Counter
     {
-        public int Value {get; private set;} = 1;
+        public int Value {get; private set;}
+
+        public Counter()
+        {
+            this.Value = 1;
+        }
 
         public void Increase()
         {

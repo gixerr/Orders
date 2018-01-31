@@ -124,7 +124,7 @@ namespace Orders.Tests.Services
             _itemRepositoryMock.Setup(x => x.GetAsync(item.Name)).ReturnsAsync((IEnumerable<Item>)null);
             _categoryRepositoryMock.Setup(x => x.GetAsync(category.Name)).ReturnsAsync(category);
             
-            await itemService.AddAsync(item.Name, category.Name);
+            await itemService.AddAsync(item.Name, item.Price, category.Name);
 
             _itemRepositoryMock.Verify(x => x.AddAsync(It.IsAny<Item>()), Times.Once);
         }
@@ -139,7 +139,7 @@ namespace Orders.Tests.Services
             _itemRepositoryMock.Setup(x => x.GetAsync(item.Name)).ReturnsAsync(items);
             _categoryRepositoryMock.Setup(x => x.GetAsync(category.Name)).ReturnsAsync(category);
 
-            await itemService.AddAsync(item.Name, category.Name);
+            await itemService.AddAsync(item.Name, item.Price, category.Name);
 
             _itemRepositoryMock.Verify(x => x.AddAsync(It.IsAny<Item>()), Times.Once);
         }
@@ -155,7 +155,7 @@ namespace Orders.Tests.Services
             _itemRepositoryMock.Setup(x => x.GetAsync(existingItem.Name)).ReturnsAsync(items);
             _categoryRepositoryMock.Setup(x => x.GetAsync(existingCategory.Name)).ReturnsAsync(existingCategory);
            
-            Func<Task> addExistingItem = async () => await itemService.AddAsync(existingItem.Name, existingCategory.Name);
+            Func<Task> addExistingItem = async () => await itemService.AddAsync(existingItem.Name, existingItem.Price, existingCategory.Name);
 
             var expectedException = addExistingItem.ShouldThrow<OrderException>();
             expectedException.And.ErrorCode.ShouldBeEquivalentTo(ErrorCode.item_already_exists);

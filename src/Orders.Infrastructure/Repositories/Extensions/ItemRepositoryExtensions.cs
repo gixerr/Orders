@@ -42,14 +42,14 @@ namespace Orders.Infrastructure.Repositories.Extensions
             return items;
         }
 
-        public static async Task AddOrFailAsync(this IItemRepository itemRepository, string name, Category category)
+        public static async Task AddOrFailAsync(this IItemRepository itemRepository, string name, decimal price, Category category)
         {
             var items = await itemRepository.GetAsync(name);          
             if (!(items is null) && items.Any(i => i.Category.Name.ToLowerInvariant() == category.Name.ToLowerInvariant()))
             {
                throw new OrderException(ErrorCode.item_already_exists, $"Item with given name '{name}' and category '{category.Name}' already exists");
             }
-            await itemRepository.AddAsync(new Item(name, category));
+            await itemRepository.AddAsync(new Item(name, price, category));
         }
 
         public static async Task RemoveOrFailAsync(this IItemRepository itemRepository, Guid id)

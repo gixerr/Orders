@@ -20,11 +20,7 @@ namespace Orders.Core.Domain
 
         public Order(string name) : base()
         {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new OrderException(ErrorCode.empty_order_name, "Order name can not be empty.");
-            }
-            this.Name = name;
+            this.Name = Validate(name);
             this.CreatedAt = DateTime.UtcNow;
         }
 
@@ -38,12 +34,12 @@ namespace Orders.Core.Domain
             return items;
         }
 
-        public void AddItem(string itemName, string categoryName)
+        public void AddItem(string itemName, decimal price, string categoryName)
         {
             var item = Items.GetItem(itemName, categoryName);
             if (item is null)
             {
-                _items.Add(new Item(itemName, new Category(categoryName)));
+                _items.Add(new Item(itemName, price, new Category(categoryName)));
                 return;
             }
             item.Counter.Increase();
@@ -65,3 +61,5 @@ namespace Orders.Core.Domain
         }
     }
 }
+
+//TODO Clear

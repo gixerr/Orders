@@ -10,6 +10,6 @@ namespace Orders.Infrastructure.Handlers.Items
         public AddItemHandler(IItemService itemService) : base(itemService) { }
 
         public async Task HandleAsync(AddItem command) 
-            => await _itemService.AddAsync(command.itemName, command.categoryName);
+            => await _itemService.AddAsync(command.itemName, command.price, command.categoryName);
     }
 }

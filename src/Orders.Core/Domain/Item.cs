@@ -7,24 +7,41 @@ namespace Orders.Core.Domain
     {
         public string Name { get; protected set; }
         public Category Category { get; protected set; }
-        public Counter Counter { get; protected set; }
+        public Counter Counter { get; protected set; } // TODO ICounter?
+        public decimal Price { get; protected set; }
         public DateTime CreatedAt { get; protected set; }
 
         protected Item()
         {
         }
 
-        public Item(string name, Category category) : base()
+        public Item(string name, decimal price, Category category) : base()
         {
-            if(string.IsNullOrWhiteSpace(name))
-            {
-                throw new OrderException(ErrorCode.empty_item_name, "Item name can not be empty.");
-            }
-            this.Name = name;
-            this.Category = category;
+            this.Name = Validate(name);
+            this.Category = Validate(category);
             this.Counter = new Counter();
+            this.Price = Validate(price);
             this.CreatedAt = DateTime.UtcNow;
         }
 
+        private decimal Validate(decimal price)
+        {
+            if (price <= 0)
+            {
+                throw new OrderException(ErrorCode.invalid_price, $"Given price '{price}' is invalid. Price must be greater then 0.");
+            }
+
+            return price;
+        }
+
+        private Category Validate(Category category)
+        {
+            if (category is null)
+            {
+                throw new OrderException(ErrorCode.category_not_found, "Category cannot be empty.");
+            }
+
+            return category;
+        }
     }
 }

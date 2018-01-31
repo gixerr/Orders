@@ -10,7 +10,7 @@ namespace Orders.Infrastructure.Services.Interfaces
          Task<IEnumerable<ItemDto>> GetAllAsync();
          Task<ItemDto> GetAsync(Guid id);
          Task<IEnumerable<ItemDto>> GetAsync(string name);
-         Task AddAsync(string itemName, string categoryName);
+         Task AddAsync(string itemName, decimal price, string categoryName);
          Task RemoveAsync(Guid id);
     }
 }

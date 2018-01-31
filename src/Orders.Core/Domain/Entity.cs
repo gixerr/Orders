@@ -1,4 +1,5 @@
 using System;
+using Orders.Core.Exceptions;
 
 namespace Orders.Core.Domain
 {
@@ -9,6 +10,16 @@ namespace Orders.Core.Domain
         protected Entity()
         {
             Id = Guid.NewGuid();
+        }
+
+        protected string Validate(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new OrderException(ErrorCode.invalid_name, "Name cannot be empty.");
+            }
+
+            return name;
         }
     }
 }

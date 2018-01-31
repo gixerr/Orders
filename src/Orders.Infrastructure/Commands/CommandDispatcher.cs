@@ -18,7 +18,7 @@ namespace Orders.Infrastructure.Commands
         {
             if (command == null)
             {
-                throw new ArgumentNullException(nameof(command), $"Commad '{typeof(T).Name} can not be null.");
+                throw new ArgumentNullException(nameof(command), $"Commad '{typeof(T).Name} cannot be null.");
             }
 
             await _context.Resolve<ICommandHandler<T>>().HandleAsync(command);

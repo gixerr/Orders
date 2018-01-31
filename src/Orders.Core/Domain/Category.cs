@@ -14,12 +14,7 @@ namespace Orders.Core.Domain
 
         public Category(string name) : base()
         {
-            if(string.IsNullOrWhiteSpace(name))
-            {
-                throw new OrderException(ErrorCode.empty_category_name, "Category name can not be empty.");
-            }
-
-            this.Name = name;
+            this.Name = Validate(name);
             this.CreatedAt = DateTime.UtcNow;
 
         }        
