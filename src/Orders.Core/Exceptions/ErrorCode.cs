@@ -11,6 +11,8 @@ namespace Orders.Core.Exceptions
         public const string order_already_exists = nameof(order_already_exists);
         public const string category_already_exists = nameof(category_already_exists);
         public const string item_already_exists = nameof(item_already_exists);
+        public const string invalid_name = nameof(invalid_name);
+        public const string invalid_price = nameof(invalid_price);
     }
 
 }
