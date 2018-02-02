@@ -1,6 +1,5 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 using Orders.Core.Repositories;
 using Orders.Infrastructure.IoC.Modules;

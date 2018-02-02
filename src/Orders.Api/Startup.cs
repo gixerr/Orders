@@ -34,8 +34,10 @@ namespace Orders.Api
                 app.UseDeveloperExceptionPage();
                 applicationLifetime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());
             }
-
+            app.UseOrdersExceptionHandler();
+            app.UseStaticFiles();
             app.UseMvc();
+            
         }
     }
 }

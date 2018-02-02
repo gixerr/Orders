@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Orders.Core.Domain;
-using Orders.Core.Repositories;
 using Orders.Infrastructure.Dtos;
 
 namespace Orders.Infrastructure.Services.Interfaces

@@ -9,6 +9,7 @@ using Orders.Core.Domain;
 using Orders.Core.Exceptions;
 using Orders.Core.Repositories;
 using Orders.Infrastructure.Dtos;
+using Orders.Infrastructure.Exceptions;
 using Orders.Infrastructure.Services;
 using Xunit;
 
@@ -45,7 +46,7 @@ namespace Orders.Tests.Services
 
             Func<Task> getAllCategories = async () => await categoryService.GetAllAsync();
 
-            var expectedExcepion = getAllCategories.ShouldThrow<OrderException>();
+            var expectedExcepion = getAllCategories.ShouldThrow<ServiceException>();
             expectedExcepion.And.ErrorCode.ShouldBeEquivalentTo(ErrorCode.category_not_found);
             expectedExcepion.And.Message.ShouldBeEquivalentTo("No categories available.");
         }
@@ -75,7 +76,7 @@ namespace Orders.Tests.Services
 
             Func<Task> getCategory = async () => await categoryService.GetAsync(category.Id);
 
-            var expectedExcepion = getCategory.ShouldThrow<OrderException>();
+            var expectedExcepion = getCategory.ShouldThrow<ServiceException>();
             expectedExcepion.And.ErrorCode.ShouldBeEquivalentTo(ErrorCode.category_not_found);
             expectedExcepion.And.Message.ShouldBeEquivalentTo($"Category with given id '{category.Id}' not found.");
         }
@@ -105,7 +106,7 @@ namespace Orders.Tests.Services
 
             Func<Task> getCategory = async () => await categoryService.GetAsync(category.Name);
 
-            var expectedExcepion = getCategory.ShouldThrow<OrderException>();
+            var expectedExcepion = getCategory.ShouldThrow<ServiceException>();
             expectedExcepion.And.ErrorCode.ShouldBeEquivalentTo(ErrorCode.category_not_found);
             expectedExcepion.And.Message.ShouldBeEquivalentTo($"Category with given name '{category.Name}' not found.");
         }
@@ -131,7 +132,7 @@ namespace Orders.Tests.Services
 
             Func<Task> addCategory = async () => await categoryService.AddAsync(category.Name);
 
-            var expectedException = addCategory.ShouldThrow<OrderException>();
+            var expectedException = addCategory.ShouldThrow<ServiceException>();
             expectedException.And.ErrorCode.ShouldBeEquivalentTo(ErrorCode.category_already_exists);
             expectedException.And.Message.ShouldBeEquivalentTo($"Category with given name '{category.Name}' already exist. Category name must be unique.");
         }
@@ -156,7 +157,7 @@ namespace Orders.Tests.Services
 
             Func<Task> removeCategory = async () => await categoryService.RemoveAsync(category.Id);
 
-            var expectedException = removeCategory.ShouldThrow<OrderException>();
+            var expectedException = removeCategory.ShouldThrow<ServiceException>();
             expectedException.And.ErrorCode.ShouldBeEquivalentTo(ErrorCode.category_not_found);
             expectedException.And.Message.ShouldBeEquivalentTo($"Category with given id '{category.Id}' not found. Unable to remove nonexiting category.");
         }

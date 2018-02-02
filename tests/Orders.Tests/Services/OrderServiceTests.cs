@@ -9,6 +9,7 @@ using Orders.Core.Domain;
 using Orders.Core.Exceptions;
 using Orders.Core.Repositories;
 using Orders.Infrastructure.Dtos;
+using Orders.Infrastructure.Exceptions;
 using Orders.Infrastructure.Services;
 using Xunit;
 
@@ -45,7 +46,7 @@ namespace Orders.Tests.Services
 
             Func<Task> getAllOrders = async () => await orderService.GetAllAsync();
 
-            var expectedExcepion = getAllOrders.ShouldThrow<OrderException>();
+            var expectedExcepion = getAllOrders.ShouldThrow<ServiceException>();
             expectedExcepion.And.ErrorCode.ShouldBeEquivalentTo(ErrorCode.order_not_found);
             expectedExcepion.And.Message.ShouldBeEquivalentTo("No orders available.");
         }
@@ -75,7 +76,7 @@ namespace Orders.Tests.Services
 
             Func<Task> getOrder = async () => await orderService.GetAsync(order.Id);
 
-            var expectedExcepion = getOrder.ShouldThrow<OrderException>();
+            var expectedExcepion = getOrder.ShouldThrow<ServiceException>();
             expectedExcepion.And.ErrorCode.ShouldBeEquivalentTo(ErrorCode.order_not_found);
             expectedExcepion.And.Message.ShouldBeEquivalentTo($"Order with given id '{order.Id}' not found.");
         }
@@ -105,7 +106,7 @@ namespace Orders.Tests.Services
 
             Func<Task> getOrder = async () => await orderService.GetAsync(order.Name);
 
-            var expectedExcepion = getOrder.ShouldThrow<OrderException>();
+            var expectedExcepion = getOrder.ShouldThrow<ServiceException>();
             expectedExcepion.And.ErrorCode.ShouldBeEquivalentTo(ErrorCode.order_not_found);
             expectedExcepion.And.Message.ShouldBeEquivalentTo($"Order with given name '{order.Name}' not found.");
         }
@@ -132,7 +133,7 @@ namespace Orders.Tests.Services
 
             Func<Task> addOrder = async () => await orderService.AddAsync(order.Name);
 
-            var expectedException = addOrder.ShouldThrow<OrderException>();
+            var expectedException = addOrder.ShouldThrow<ServiceException>();
             expectedException.And.ErrorCode.ShouldBeEquivalentTo(ErrorCode.order_already_exists);
             expectedException.And.Message.ShouldBeEquivalentTo($"Order with given name '{order.Name}' already exist. Order name must be unique.");
         }
@@ -157,7 +158,7 @@ namespace Orders.Tests.Services
 
             Func<Task> removeOrder = async () => await orderService.RemoveAsync(order.Id);
 
-            var expectedException = removeOrder.ShouldThrow<OrderException>();
+            var expectedException = removeOrder.ShouldThrow<ServiceException>();
             expectedException.And.ErrorCode.ShouldBeEquivalentTo(ErrorCode.order_not_found);
             expectedException.And.Message.ShouldBeEquivalentTo($"Order with given id '{order.Id}' not found. Unable to remove nonexiting order.");
         }

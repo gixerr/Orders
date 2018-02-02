@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Orders.Core.Domain;
 using Orders.Core.Exceptions;
 using Orders.Core.Repositories;
+using Orders.Infrastructure.Exceptions;
 
 namespace Orders.Infrastructure.Repositories.Extensions
 {
@@ -14,7 +15,7 @@ namespace Orders.Infrastructure.Repositories.Extensions
             var categories = await categoryRepository.GetAllAsync();
             if (categories is null)
             {
-                throw new OrderException(ErrorCode.category_not_found, "No categories available.");
+                throw new ServiceException(ErrorCode.category_not_found, "No categories available.");
             }
 
             return categories;
@@ -24,7 +25,7 @@ namespace Orders.Infrastructure.Repositories.Extensions
             var category = await categoryRepository.GetAsync(id);
             if (category is null)
             {
-                throw new OrderException(ErrorCode.category_not_found, $"Category with given id '{id}' not found.");
+                throw new ServiceException(ErrorCode.category_not_found, $"Category with given id '{id}' not found.");
             }
 
             return category;
@@ -35,7 +36,7 @@ namespace Orders.Infrastructure.Repositories.Extensions
             var category = await categoryRepository.GetAsync(name);
             if (category is null)
             {
-                throw new OrderException(ErrorCode.category_not_found, $"Category with given name '{name}' not found.");
+                throw new ServiceException(ErrorCode.category_not_found, $"Category with given name '{name}' not found.");
             }
 
             return category;
@@ -46,7 +47,7 @@ namespace Orders.Infrastructure.Repositories.Extensions
             var category = await categoryRepository.GetAsync(name);
             if(!(category is null))
             {
-                throw new OrderException(ErrorCode.category_already_exists, $"Category with given name '{name}' already exist. Category name must be unique.");
+                throw new ServiceException(ErrorCode.category_already_exists, $"Category with given name '{name}' already exist. Category name must be unique.");
             }
             category = new Category(name);
             await categoryRepository.AddAsync(category);
@@ -57,7 +58,7 @@ namespace Orders.Infrastructure.Repositories.Extensions
             var category = await categoryRepository.GetAsync(id);
             if (category is null)
             {
-                throw new OrderException(ErrorCode.category_not_found, $"Category with given id '{id}' not found. Unable to remove nonexiting category.");
+                throw new ServiceException(ErrorCode.category_not_found, $"Category with given id '{id}' not found. Unable to remove nonexiting category.");
             }
             await categoryRepository.RemoveAsync(id);
         }

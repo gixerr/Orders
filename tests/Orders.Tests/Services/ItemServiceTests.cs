@@ -9,6 +9,7 @@ using Orders.Core.Domain;
 using Orders.Core.Exceptions;
 using Orders.Core.Repositories;
 using Orders.Infrastructure.Dtos;
+using Orders.Infrastructure.Exceptions;
 using Orders.Infrastructure.Services;
 using Xunit;
 
@@ -47,7 +48,7 @@ namespace Orders.Tests.Services
 
             Func<Task> getAllItems = async () => await itemService.GetAllAsync();
 
-            var expectedExcepion = getAllItems.ShouldThrow<OrderException>();
+            var expectedExcepion = getAllItems.ShouldThrow<ServiceException>();
             expectedExcepion.And.ErrorCode.ShouldBeEquivalentTo(ErrorCode.item_not_found);
             expectedExcepion.And.Message.ShouldBeEquivalentTo("No items available.");
         }
@@ -77,7 +78,7 @@ namespace Orders.Tests.Services
 
             Func<Task> getItem = async () => await itemService.GetAsync(item.Id);
 
-            var expectedExcepion = getItem.ShouldThrow<OrderException>();
+            var expectedExcepion = getItem.ShouldThrow<ServiceException>();
             expectedExcepion.And.ErrorCode.ShouldBeEquivalentTo(ErrorCode.item_not_found);
             expectedExcepion.And.Message.ShouldBeEquivalentTo($"Item with given id '{item.Id}' not found.");
         }
@@ -110,7 +111,7 @@ namespace Orders.Tests.Services
             
             Func<Task> getItem = async () => await itemService.GetAsync(item.Name);
 
-            var expectedExcepion = getItem.ShouldThrow<OrderException>();
+            var expectedExcepion = getItem.ShouldThrow<ServiceException>();
             expectedExcepion.And.ErrorCode.ShouldBeEquivalentTo(ErrorCode.item_not_found);
             expectedExcepion.And.Message.ShouldBeEquivalentTo($"Item with given name '{item.Name}' not found.");
         }
@@ -157,7 +158,7 @@ namespace Orders.Tests.Services
            
             Func<Task> addExistingItem = async () => await itemService.AddAsync(existingItem.Name, existingItem.Price, existingCategory.Name);
 
-            var expectedException = addExistingItem.ShouldThrow<OrderException>();
+            var expectedException = addExistingItem.ShouldThrow<ServiceException>();
             expectedException.And.ErrorCode.ShouldBeEquivalentTo(ErrorCode.item_already_exists);
             expectedException.And.Message.ShouldBeEquivalentTo($"Item with given name '{existingItem.Name}' and category '{existingCategory.Name}' already exists");
         }
@@ -182,7 +183,7 @@ namespace Orders.Tests.Services
 
             Func<Task> removeItem = async () => await itemService.RemoveAsync(item.Id);
 
-            var expectedException = removeItem.ShouldThrow<OrderException>();
+            var expectedException = removeItem.ShouldThrow<ServiceException>();
             expectedException.And.ErrorCode.ShouldBeEquivalentTo(ErrorCode.item_not_found);
             expectedException.And.Message.ShouldBeEquivalentTo($"Item with given id '{item.Id}' not found. Unable to remove nonexiting item.");
         }

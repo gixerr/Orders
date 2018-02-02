@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Orders.Core.Domain;
 using Orders.Core.Exceptions;
 using Orders.Core.Repositories;
+using Orders.Infrastructure.Exceptions;
 
 namespace Orders.Infrastructure.Repositories.Extensions
 {
@@ -15,7 +15,7 @@ namespace Orders.Infrastructure.Repositories.Extensions
             var orders = await orderRepository.GetAllAsync();
             if (orders is null)
             {
-                throw new OrderException(ErrorCode.order_not_found, "No orders available.");
+                throw new ServiceException(ErrorCode.order_not_found, "No orders available.");
             }
 
             return orders;
@@ -25,7 +25,7 @@ namespace Orders.Infrastructure.Repositories.Extensions
             var order = await orderRepository.GetAsync(id);
             if (order is null)
             {
-                throw new OrderException(ErrorCode.order_not_found, $"Order with given id '{id}' not found.");
+                throw new ServiceException(ErrorCode.order_not_found, $"Order with given id '{id}' not found.");
             }
 
             return order;
@@ -36,7 +36,7 @@ namespace Orders.Infrastructure.Repositories.Extensions
             var order = await orderRepository.GetAsync(name);
             if (order is null)
             {
-                throw new OrderException(ErrorCode.order_not_found, $"Order with given name '{name}' not found.");
+                throw new ServiceException(ErrorCode.order_not_found, $"Order with given name '{name}' not found.");
             }
 
             return order;
@@ -47,7 +47,7 @@ namespace Orders.Infrastructure.Repositories.Extensions
             var order = await orderRepository.GetAsync(name);
             if(!(order is null))
             {
-                throw new OrderException(ErrorCode.order_already_exists, $"Order with given name '{name}' already exist. Order name must be unique.");
+                throw new ServiceException(ErrorCode.order_already_exists, $"Order with given name '{name}' already exist. Order name must be unique.");
             }
             order = new Order(name);
             await orderRepository.AddAsync(order);
@@ -58,7 +58,7 @@ namespace Orders.Infrastructure.Repositories.Extensions
             var order = await orderRepository.GetAsync(id);
             if (order is null)
             {
-                throw new OrderException(ErrorCode.order_not_found, $"Order with given id '{id}' not found. Unable to remove nonexiting order.");
+                throw new ServiceException(ErrorCode.order_not_found, $"Order with given id '{id}' not found. Unable to remove nonexiting order.");
             }
             await orderRepository.RemoveAsync(id);
         }
