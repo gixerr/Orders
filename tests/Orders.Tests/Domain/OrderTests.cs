@@ -15,7 +15,7 @@ namespace Orders.Tests.Domain
 
             Action createNewOrder = () => new Order(name);
 
-            var expectedException = createNewOrder.ShouldThrow<OrderException>();
+            var expectedException = createNewOrder.ShouldThrow<OrdersException>();
             expectedException.And.ErrorCode.ShouldBeEquivalentTo(ErrorCode.invalid_name);
             expectedException.And.Message.ShouldBeEquivalentTo("Name cannot be empty.");
         }
@@ -27,7 +27,7 @@ namespace Orders.Tests.Domain
 
             Action createNewOrder = () => new Order(name);
 
-            var expectedException = createNewOrder.ShouldThrow<OrderException>();
+            var expectedException = createNewOrder.ShouldThrow<OrdersException>();
             expectedException.And.ErrorCode.ShouldBeEquivalentTo(ErrorCode.invalid_name);
             expectedException.And.Message.ShouldBeEquivalentTo("Name cannot be empty.");
         }

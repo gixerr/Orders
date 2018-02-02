@@ -1,9 +1,8 @@
 using System;
-using Orders.Core.Exceptions;
 
 namespace Orders.Core.Domain
 {
-    public class Category: Entity
+    public class Category : Entity
     {
         public string Name { get; protected set; }
         public DateTime CreatedAt { get; protected set; }

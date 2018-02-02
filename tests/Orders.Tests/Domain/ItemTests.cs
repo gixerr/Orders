@@ -30,7 +30,7 @@ namespace Orders.Tests.Domain
 
             Action createNewItem = () => new Item(name, price, category);
 
-            var expectedException = createNewItem.ShouldThrow<OrderException>();
+            var expectedException = createNewItem.ShouldThrow<OrdersException>();
             expectedException.And.ErrorCode.ShouldBeEquivalentTo(ErrorCode.invalid_name);
             expectedException.And.Message.ShouldBeEquivalentTo("Name cannot be empty.");
         }
@@ -42,7 +42,7 @@ namespace Orders.Tests.Domain
 
             Action createNewItem = () => new Item(name, price, category);
 
-            var expectedException = createNewItem.ShouldThrow<OrderException>();
+            var expectedException = createNewItem.ShouldThrow<OrdersException>();
             expectedException.And.ErrorCode.ShouldBeEquivalentTo(ErrorCode.invalid_name);
             expectedException.And.Message.ShouldBeEquivalentTo("Name cannot be empty.");
         }
@@ -52,7 +52,7 @@ namespace Orders.Tests.Domain
         {
             Action createNewItem = () => new Item(name, price, null);
 
-            var expectedException = createNewItem.ShouldThrow<OrderException>();
+            var expectedException = createNewItem.ShouldThrow<OrdersException>();
             expectedException.And.ErrorCode.ShouldBeEquivalentTo(ErrorCode.category_not_found);
             expectedException.And.Message.ShouldBeEquivalentTo("Category cannot be empty.");
         }
@@ -73,7 +73,7 @@ namespace Orders.Tests.Domain
 
             Action createNewItem = () => new Item(name, price, category);
 
-            var expectedException = createNewItem.ShouldThrow<OrderException>();
+            var expectedException = createNewItem.ShouldThrow<OrdersException>();
             expectedException.And.ErrorCode.ShouldBeEquivalentTo(ErrorCode.invalid_price);
             expectedException.And.Message.ShouldBeEquivalentTo($"Given price '{price}' is invalid. Price must be greater then 0.");
         }
@@ -85,7 +85,7 @@ namespace Orders.Tests.Domain
 
             Action createNewItem = () => new Item(name, price, category);
 
-            var expectedException = createNewItem.ShouldThrow<OrderException>();
+            var expectedException = createNewItem.ShouldThrow<OrdersException>();
             expectedException.And.ErrorCode.ShouldBeEquivalentTo(ErrorCode.invalid_price);
             expectedException.And.Message.ShouldBeEquivalentTo($"Given price '{price}' is invalid. Price must be greater then 0.");
         }

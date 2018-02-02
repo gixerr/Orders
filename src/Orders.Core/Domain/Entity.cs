@@ -16,7 +16,7 @@ namespace Orders.Core.Domain
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new OrderException(ErrorCode.invalid_name, "Name cannot be empty.");
+                throw new OrdersException(ErrorCode.invalid_name, "Name cannot be empty.");
             }
 
             return name;

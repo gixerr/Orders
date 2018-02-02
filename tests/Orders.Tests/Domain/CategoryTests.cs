@@ -1,5 +1,4 @@
 ﻿using System;
-using AutoFixture;
 using FluentAssertions;
 using Orders.Core.Domain;
 using Orders.Core.Exceptions;
@@ -16,7 +15,7 @@ namespace Orders.Tests.Domain
 
             Action createNewCategory = () => new Category(name);
 
-            var expectedException = createNewCategory.ShouldThrow<OrderException>();
+            var expectedException = createNewCategory.ShouldThrow<OrdersException>();
             expectedException.And.ErrorCode.ShouldBeEquivalentTo(ErrorCode.invalid_name);
             expectedException.And.Message.ShouldBeEquivalentTo("Name cannot be empty.");
         }
@@ -28,7 +27,7 @@ namespace Orders.Tests.Domain
 
             Action createNewCategory = () => new Category(name);
 
-            var expectedException = createNewCategory.ShouldThrow<OrderException>();
+            var expectedException = createNewCategory.ShouldThrow<OrdersException>();
             expectedException.And.ErrorCode.ShouldBeEquivalentTo(ErrorCode.invalid_name);
             expectedException.And.Message.ShouldBeEquivalentTo("Name cannot be empty.");
         }
