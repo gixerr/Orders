@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Orders.Infrastructure.Commands.Interfaces;
@@ -35,7 +33,7 @@ namespace Orders.Api.Controllers
             return Ok(item);
         }
 
-        [HttpGet("{name")]
+        [HttpGet("{name}")]
         public async Task<IActionResult> Get(string name)
         {
             var items = await _itemService.GetAsync(name);
