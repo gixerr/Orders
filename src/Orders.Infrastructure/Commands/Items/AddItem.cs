@@ -1,3 +1,5 @@
+using Orders.Infrastructure.Commands.Interfaces;
+
 namespace Orders.Infrastructure.Commands.Items
 {
     public class AddItem : ICommand

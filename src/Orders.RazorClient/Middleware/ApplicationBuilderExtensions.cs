@@ -1,7 +1,8 @@
 ﻿using System.IO;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.FileProviders;
 
-namespace Microsoft.AspNetCore.Builder
+namespace Orders.RazorClient.Middleware
 {
     public static class ApplicationBuilderExtensions
     {

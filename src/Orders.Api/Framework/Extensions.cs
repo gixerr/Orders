@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Orders.Api.Middleware;
 
 namespace Orders.Api.Framework
 {
