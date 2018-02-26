@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoFixture;
-using AutoMapper;
 using FluentAssertions;
 using Moq;
 using Orders.Core.Domain;
@@ -19,21 +18,19 @@ namespace Orders.Tests.Services
     {
         private readonly Mock<IItemRepository> _itemRepositoryMock;
         private readonly Mock<ICategoryRepository> _categoryRepositoryMock;
-        private readonly Mock<IMapper> _mapperMock;
         private readonly Fixture _fixture;
 
         public ItemServiceTests()
         {
             _itemRepositoryMock = new Mock<IItemRepository>();
             _categoryRepositoryMock = new Mock<ICategoryRepository>();
-            _mapperMock = new Mock<IMapper>();
             _fixture = new Fixture();
         }
 
         [Fact]
         public async Task get_all_async_should_invoke_get_all_async_on_repository()
         {
-            var itemService = new ItemService(_itemRepositoryMock.Object, _categoryRepositoryMock.Object, _mapperMock.Object);
+            var itemService = new ItemService(_itemRepositoryMock.Object, _categoryRepositoryMock.Object);
 
             await itemService.GetAllAsync();
 
@@ -44,7 +41,7 @@ namespace Orders.Tests.Services
         public void get_all_async_should_throw_an_exception_when_repository_is_empty()
         {
             _itemRepositoryMock.Setup(x => x.GetAllAsync()).ReturnsAsync((IEnumerable<Item>) null);
-            var itemService = new ItemService(_itemRepositoryMock.Object,_categoryRepositoryMock.Object ,_mapperMock.Object);
+            var itemService = new ItemService(_itemRepositoryMock.Object,_categoryRepositoryMock.Object);
 
             Func<Task> getAllItems = async () => await itemService.GetAllAsync();
 
@@ -57,24 +54,20 @@ namespace Orders.Tests.Services
         public async Task get_async_by_id_should_invoke_gat_async_on_repository()
         {
             var item = _fixture.Create<Item>();
-            var itemDto = _fixture.Create<ItemDto>();
             _itemRepositoryMock.Setup(x => x.GetAsync(item.Id)).ReturnsAsync(item);
-            _mapperMock.Setup(x => x.Map<ItemDto>(item)).Returns(itemDto);
-            var itemService = new ItemService(_itemRepositoryMock.Object, _categoryRepositoryMock.Object,
-                _mapperMock.Object);
+            var itemService = new ItemService(_itemRepositoryMock.Object, _categoryRepositoryMock.Object);
 
             var expectedItemDto = await itemService.GetAsync(item.Id);
 
             expectedItemDto.Should().NotBeNull();
             _itemRepositoryMock.Verify(x => x.GetAsync(item.Id), Times.Once);
-            _mapperMock.Verify(x => x.Map<ItemDto>(item));
         }
 
         [Fact]
         public void get_async_by_id_should_throw_an_exception_when_item_with_given_id_not_exist()
         {
             var item = _fixture.Create<Item>();
-            var itemService = new ItemService(_itemRepositoryMock.Object, _categoryRepositoryMock.Object, _mapperMock.Object);
+            var itemService = new ItemService(_itemRepositoryMock.Object, _categoryRepositoryMock.Object);
 
             Func<Task> getItem = async () => await itemService.GetAsync(item.Id);
 
@@ -90,15 +83,12 @@ namespace Orders.Tests.Services
             var items = _fixture.Create<List<Item>>();
             var itemDtos = _fixture.Create<List<ItemDto>>();
             _itemRepositoryMock.Setup(x => x.GetAsync(item.Name)).ReturnsAsync(items);
-            _mapperMock.Setup(x => x.Map<IEnumerable<ItemDto>>(items)).Returns(itemDtos);
-            var itemService = new ItemService(_itemRepositoryMock.Object, _categoryRepositoryMock.Object,
-                _mapperMock.Object);
+            var itemService = new ItemService(_itemRepositoryMock.Object, _categoryRepositoryMock.Object);
 
             var expectedItemsDto = await itemService.GetAsync(item.Name);
 
             expectedItemsDto.Should().NotBeNull();
             _itemRepositoryMock.Verify(x => x.GetAsync(item.Name), Times.Once);
-            _mapperMock.Verify(x => x.Map<IEnumerable<ItemDto>>(items));
         }
 
         [Fact]
@@ -107,7 +97,7 @@ namespace Orders.Tests.Services
             
             var item = _fixture.Create<Item>();
             _itemRepositoryMock.Setup(x => x.GetAsync(item.Name)).ReturnsAsync((IEnumerable<Item>)null);
-            var itemService = new ItemService(_itemRepositoryMock.Object, _categoryRepositoryMock.Object, _mapperMock.Object);
+            var itemService = new ItemService(_itemRepositoryMock.Object, _categoryRepositoryMock.Object);
             
             Func<Task> getItem = async () => await itemService.GetAsync(item.Name);
 
@@ -121,7 +111,7 @@ namespace Orders.Tests.Services
         {
             var item = _fixture.Create<Item>();
             var category = _fixture.Create<Category>();
-            var itemService = new ItemService(_itemRepositoryMock.Object, _categoryRepositoryMock.Object, _mapperMock.Object);
+            var itemService = new ItemService(_itemRepositoryMock.Object, _categoryRepositoryMock.Object);
             _itemRepositoryMock.Setup(x => x.GetAsync(item.Name)).ReturnsAsync((IEnumerable<Item>)null);
             _categoryRepositoryMock.Setup(x => x.GetAsync(category.Name)).ReturnsAsync(category);
             
@@ -136,7 +126,7 @@ namespace Orders.Tests.Services
             var item = _fixture.Create<Item>();
             var category = _fixture.Create<Category>();
             var items = _fixture.Create<List<Item>>();
-            var itemService = new ItemService(_itemRepositoryMock.Object, _categoryRepositoryMock.Object, _mapperMock.Object);
+            var itemService = new ItemService(_itemRepositoryMock.Object, _categoryRepositoryMock.Object);
             _itemRepositoryMock.Setup(x => x.GetAsync(item.Name)).ReturnsAsync(items);
             _categoryRepositoryMock.Setup(x => x.GetAsync(category.Name)).ReturnsAsync(category);
 
@@ -152,7 +142,7 @@ namespace Orders.Tests.Services
             var existingItem = items[0];
             var existingCategory = items[0].Category;
 
-            var itemService = new ItemService(_itemRepositoryMock.Object, _categoryRepositoryMock.Object, _mapperMock.Object);
+            var itemService = new ItemService(_itemRepositoryMock.Object, _categoryRepositoryMock.Object);
             _itemRepositoryMock.Setup(x => x.GetAsync(existingItem.Name)).ReturnsAsync(items);
             _categoryRepositoryMock.Setup(x => x.GetAsync(existingCategory.Name)).ReturnsAsync(existingCategory);
            
@@ -166,7 +156,7 @@ namespace Orders.Tests.Services
         [Fact]
         public async Task remove_async_should_invoke_remove_async_on_repository()
         {
-            var itemService = new ItemService(_itemRepositoryMock.Object, _categoryRepositoryMock.Object, _mapperMock.Object);
+            var itemService = new ItemService(_itemRepositoryMock.Object, _categoryRepositoryMock.Object);
             var item = _fixture.Create<Item>();
             _itemRepositoryMock.Setup((x => x.GetAsync(item.Id))).ReturnsAsync(item);
 
@@ -178,7 +168,7 @@ namespace Orders.Tests.Services
         [Fact]
         public void removing_nonexisting_order_should_throw_an_exception()
         {
-            var itemService = new ItemService(_itemRepositoryMock.Object, _categoryRepositoryMock.Object, _mapperMock.Object);
+            var itemService = new ItemService(_itemRepositoryMock.Object, _categoryRepositoryMock.Object);
             var item = _fixture.Create<Item>();
 
             Func<Task> removeItem = async () => await itemService.RemoveAsync(item.Id);

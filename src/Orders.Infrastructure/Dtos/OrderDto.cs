@@ -10,5 +10,6 @@ namespace Orders.Infrastructure.Dtos
         public string Name { get; set; }
         public DateTime CreatedAt { get; set; }
         public IEnumerable<Item> Items { get; set; }
+        public Status Status { get; set; }
     }
 }

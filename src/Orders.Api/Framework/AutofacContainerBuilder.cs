@@ -32,7 +32,6 @@ namespace Orders.Api.Framework
             builder.RegisterType<OrderService>().As<IOrderService>().InstancePerLifetimeScope();
             builder.RegisterType<CategoryService>().As<ICategoryService>().InstancePerLifetimeScope();
             builder.RegisterType<ItemService>().As<IItemService>().InstancePerLifetimeScope();
-            builder.RegisterInstance(AutoMapperConfig.GetMapper()).SingleInstance();
             builder.RegisterModule<CommandModule>();
 
             return builder.Build();

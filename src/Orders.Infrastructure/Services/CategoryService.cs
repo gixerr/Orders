@@ -10,22 +10,22 @@ using Orders.Infrastructure.Services.Interfaces;
 
 namespace Orders.Infrastructure.Services
 {
-    public class CategoryService : Service, ICategoryService
+    public class CategoryService : ICategoryService
     {
         private readonly ICategoryRepository _categoryRepository;
 
-        public CategoryService(ICategoryRepository categoryRepository, IMapper mapper) : base(mapper)
+        public CategoryService(ICategoryRepository categoryRepository)
         {
             _categoryRepository = categoryRepository;
         }
         public async Task<IEnumerable<CategoryDto>> GetAllAsync()
-            => (await _categoryRepository.GetAllOrFailAsync()).Dto(_mapper);
+            => (await _categoryRepository.GetAllOrFailAsync()).Dto();
 
         public async Task<CategoryDto> GetAsync(Guid id)
-            => (await _categoryRepository.GetOrFailAsync(id)).Dto(_mapper);
+            => (await _categoryRepository.GetOrFailAsync(id)).Dto();
 
         public async Task<CategoryDto> GetAsync(string name)
-            => (await _categoryRepository.GetOrFailAsync(name)).Dto(_mapper);
+            => (await _categoryRepository.GetOrFailAsync(name)).Dto();
 
         public async Task AddAsync(string name)
             => await _categoryRepository.AddOrFailAsync(name);

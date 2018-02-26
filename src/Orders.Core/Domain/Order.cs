@@ -10,6 +10,7 @@ namespace Orders.Core.Domain
         private ISet<Item> _items = new HashSet<Item>();
         public string Name { get; protected set; }
         public DateTime CreatedAt { get; protected set; }
+        public Status Status { get; protected set; }
         public IEnumerable<Item> Items
         {
             get => _items;
@@ -18,10 +19,11 @@ namespace Orders.Core.Domain
 
         protected Order() { }
 
-        public Order(string name) : base()
+        public Order(string name, Status status = Status.Purchased)
         {
             this.Name = Validate(name);
             this.CreatedAt = DateTime.UtcNow;
+            this.Status = status;
         }
 
         public IEnumerable<Item> GetItems(string name)

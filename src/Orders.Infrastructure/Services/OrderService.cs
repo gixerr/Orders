@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AutoMapper;
 using Orders.Core.Repositories;
 using Orders.Infrastructure.Dtos;
 using Orders.Infrastructure.Repositories.Extensions;
@@ -10,23 +9,26 @@ using Orders.Infrastructure.Services.Interfaces;
 
 namespace Orders.Infrastructure.Services
 {
-    public class OrderService : Service, IOrderService
+    public class OrderService : IOrderService
     {
         private readonly IOrderRepository _orderRepository;
 
-        public OrderService(IOrderRepository orderRepository, IMapper mapper) : base(mapper)
+        public OrderService(IOrderRepository orderRepository)
         {
             _orderRepository = orderRepository;
         }
         
         public async Task<IEnumerable<OrderDto>> GetAllAsync()
-            => (await _orderRepository.GetAllOrFailAsync()).Dto(_mapper);
+            => (await _orderRepository.GetAllOrFailAsync()).Dto();
 
         public async Task<OrderDto> GetAsync(Guid id)
-            => (await _orderRepository.GetOrFailAsync(id)).Dto(_mapper);
+            => (await _orderRepository.GetOrFailAsync(id)).Dto();
 
         public async Task<OrderDto> GetAsync(string name)
-            => (await _orderRepository.GetOrFailAsync(name)).Dto(_mapper);
+            => (await _orderRepository.GetOrFailAsync(name)).Dto();
+
+        public async Task<IEnumerable<OrderDto>> GetAsync(StatusDto status)
+            => (await _orderRepository.GetOrFailAsync(status)).Dto();
 
         public async Task AddAsync(string name)
             => await _orderRepository.AddOrFailAsync(name); 

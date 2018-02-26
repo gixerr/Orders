@@ -20,6 +20,9 @@ namespace Orders.Infrastructure.Repositories
         public Task<Order> GetAsync(string name)
             => Task.FromResult(_orders.SingleOrDefault(o => o.Name.ToLowerInvariant() == name.ToLowerInvariant()));
 
+        public Task<IEnumerable<Order>> GetAsync(Status status)
+            => Task.FromResult(_orders.Where(o => o.Status == status));
+
         public async Task AddAsync(Order order)
         {
             _orders.Add(order);

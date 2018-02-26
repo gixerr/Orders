@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Orders.Infrastructure.Exceptions;
 
-namespace Orders.Api.Framework
+namespace Orders.Api.Middleware
 {
     public class ExceptionHandlerMiddleware
     {

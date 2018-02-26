@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Orders.Core.Domain;
 using Orders.Core.Exceptions;
 using Orders.Core.Repositories;
+using Orders.Infrastructure.Dtos;
 using Orders.Infrastructure.Exceptions;
 
 namespace Orders.Infrastructure.Repositories.Extensions
@@ -42,10 +43,23 @@ namespace Orders.Infrastructure.Repositories.Extensions
             return order;
         }
 
+        public static async Task<IEnumerable<Order>> GetOrFailAsync(this IOrderRepository orderRepository,
+            StatusDto statusDto)
+        {
+            var status = (Status)Enum.Parse(typeof(Status), statusDto.ToString(), true);
+            var orders = await orderRepository.GetAsync(status);
+            if (orders is null)
+            {
+                throw new ServiceException(ErrorCode.order_not_found, $"Order with given status '{status}' not found.");
+            }
+
+            return orders;
+        }
+
         public static async Task AddOrFailAsync(this IOrderRepository orderRepository, string name)
         {
             var order = await orderRepository.GetAsync(name);
-            if(!(order is null))
+            if (!(order is null))
             {
                 throw new ServiceException(ErrorCode.order_already_exists, $"Order with given name '{name}' already exist. Order name must be unique.");
             }
