@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Orders.Infrastructure.Services;
 using Orders.Infrastructure.Services.Interfaces;
 
 namespace Orders.Infrastructure.IoC.Modules
@@ -13,6 +14,10 @@ namespace Orders.Infrastructure.IoC.Modules
                 .Where(t => t.IsAssignableTo<IService>())
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
+
+            builder.RegisterType<Encrypter>()
+                .As<IEncrypter>()
+                .SingleInstance();
         }
     }
 }
