@@ -5,7 +5,7 @@ using Orders.Infrastructure.Dtos;
 
 namespace Orders.Infrastructure.Services.Interfaces
 {
-    public interface ICategoryService
+    public interface ICategoryService : IService
     {
          Task<IEnumerable<CategoryDto>> GetAllAsync();
          Task<CategoryDto> GetAsync(Guid id);

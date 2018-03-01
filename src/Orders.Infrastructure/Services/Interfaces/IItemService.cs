@@ -5,7 +5,7 @@ using Orders.Infrastructure.Dtos;
 
 namespace Orders.Infrastructure.Services.Interfaces
 {
-    public interface IItemService
+    public interface IItemService : IService
     {
          Task<IEnumerable<ItemDto>> GetAllAsync();
          Task<ItemDto> GetAsync(Guid id);

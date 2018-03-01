@@ -42,14 +42,14 @@ namespace Orders.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(AddOrder command)
+        public async Task<IActionResult> Post([FromBody]AddOrder command)
         {
             await CommandDispatcher.DispatchAsync(command);
 
             return Created($"orders/{command.Name}", null);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}")] 
         public async Task<IActionResult> Delete(RemoveOrder command)
         {
             await CommandDispatcher.DispatchAsync(command);

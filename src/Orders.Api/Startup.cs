@@ -21,7 +21,7 @@ namespace Orders.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            ApplicationContainer = new AutofacContainerBuilder(services).Build();
+            ApplicationContainer = new AutofacContainer(services, Configuration).Build();
 
             return new AutofacServiceProvider(ApplicationContainer);
         }

@@ -5,7 +5,7 @@ using Orders.Core.Domain;
 
 namespace Orders.Core.Repositories
 {
-    public interface ICategoryRepository
+    public interface ICategoryRepository : IRepository
     {
         Task<IEnumerable<Category>> GetAllAsync();
         Task<Category> GetAsync(Guid id);

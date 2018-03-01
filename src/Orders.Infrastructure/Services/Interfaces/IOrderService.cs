@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Orders.Core.Domain;
 using Orders.Infrastructure.Dtos;
 
 namespace Orders.Infrastructure.Services.Interfaces
 {
-    public interface IOrderService
+    public interface IOrderService : IService
     {
         Task<IEnumerable<OrderDto>> GetAllAsync();
         Task<OrderDto> GetAsync(Guid id);
