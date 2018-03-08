@@ -7,9 +7,11 @@ namespace Orders.Infrastructure.Handlers
         protected readonly IOrderService _orderService;
         protected readonly ICategoryService _categoryService;
         protected readonly IItemService _itemService;
+        protected readonly IUserService _userService;
 
         protected ServiceHandler(IOrderService orderService)
         {
+            
             _orderService = orderService;
         }
 
@@ -21,6 +23,12 @@ namespace Orders.Infrastructure.Handlers
         protected ServiceHandler(IItemService itemService)
         {
             _itemService = itemService;
-        } 
+        }
+
+        protected ServiceHandler(IUserService userService)
+        {
+            _userService = userService;
+        }
+
     }
 }

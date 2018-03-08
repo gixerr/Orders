@@ -12,7 +12,7 @@ namespace Orders.Api
     public class Startup
     {
         public IConfiguration Configuration { get; }
-        public IContainer ApplicationContainer { get; private set; }
+        public IContainer Container { get; private set; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -21,9 +21,9 @@ namespace Orders.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            ApplicationContainer = new AutofacContainer(services, Configuration).Build();
+            Container = new AutofacContainer(services, Configuration).Build();
 
-            return new AutofacServiceProvider(ApplicationContainer);
+            return new AutofacServiceProvider(Container);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -32,7 +32,7 @@ namespace Orders.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                applicationLifetime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());
+                applicationLifetime.ApplicationStopped.Register(() => Container.Dispose());
             }
             app.UseOrdersExceptionHandler();
             app.UseStaticFiles();

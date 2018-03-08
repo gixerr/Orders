@@ -17,12 +17,17 @@ namespace Orders.Api.Framework
             _configuration = configuration;
         }
 
-        public IContainer Build()
+        private IServiceCollection Services()
         {
             _services.AddMvc();
 
+            return _services;
+        }
+
+        public IContainer Build()
+        {
             var builder = new ContainerBuilder();
-            builder.Populate(_services);
+            builder.Populate(Services());
 
             builder.RegisterModule(new ContainerModule(_configuration));
             

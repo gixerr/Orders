@@ -13,8 +13,15 @@ namespace Orders.Infrastructure.Mappings
                 cfg.CreateMap<Order, OrderDto>()
                     .ForMember(m => m.Status, o => o.MapFrom(s =>
                         (StatusDto)Enum.Parse(typeof(StatusDto), s.Status.ToString(), true)));
+
                 cfg.CreateMap<Category, CategoryDto>();
+
                 cfg.CreateMap<Item, ItemDto>();
-            }).CreateMapper();
+
+                cfg.CreateMap<User, UserDto>()
+                    .ForMember(m => m.Role, o => o.MapFrom(s => 
+                        (RoleDto)Enum.Parse(typeof(RoleDto), s.Role.ToString(), true)));
+            })
+            .CreateMapper();
     }
 }
