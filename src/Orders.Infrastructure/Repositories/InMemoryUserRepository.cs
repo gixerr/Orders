@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Orders.Core.Domain;
 using Orders.Core.Repositories;
+using Microsoft.AspNetCore.Identity;
 
 namespace Orders.Infrastructure.Repositories
 {
@@ -43,7 +44,9 @@ namespace Orders.Infrastructure.Repositories
         {
             for (int i = 0; i < 10; i++)
             {
-                yield return new User(Guid.NewGuid(), $"User-{i+1}", $"User-{i+1}@email.com", $"secret{i+1}", $"salt{i+1}");
+                var user = new User(Guid.NewGuid(), $"User-{i+1}", $"User-{i+1}@email.com");
+                user.SetPassword($"secret{i+1}", new PasswordHasher<User>());
+                yield return user;
             }
         }
     }

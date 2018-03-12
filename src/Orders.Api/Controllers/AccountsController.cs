@@ -16,7 +16,7 @@ namespace Orders.Api.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Post([FromBody] Register command)
+        public async Task<IActionResult> Register([FromBody] Register command)
         {
             await CommandDispatcher.DispatchAsync(command);
 
@@ -24,9 +24,9 @@ namespace Orders.Api.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Post([FromBody] LoginUser command)
+        public async Task<IActionResult> Login([FromBody] Login command)
         {
-
+            return Ok();
         }
     }
 }
