@@ -19,7 +19,6 @@ namespace Orders.Core.Domain
         public string Name { get; protected set; }
         public string Email { get; protected set; }
         public string HashedPassword { get; protected set; }
-        public string Salt { get; protected set; }
         public Role Role { get; protected set; }
         public DateTime CreatedAt { get; protected set; }
 
@@ -47,5 +46,7 @@ namespace Orders.Core.Domain
             }
             this.HashedPassword = passwordHasher.HashPassword(this, password);
         }
+
+        //TODO SetRole
     }
 }

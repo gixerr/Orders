@@ -60,13 +60,13 @@ namespace Orders.Infrastructure.Repositories.Extensions
             var user = await userRepository.GetByEmailAsync(email);
             if (!(user is null))
             {
-                throw new ServiceException(ErrorCode.user_already_exists, $"user with given email '{email}' already exist. User email must be unique.");
+                throw new ServiceException(ErrorCode.user_already_exists, $"User with given email '{email}' already exist. User email must be unique.");
             }
 
             user = await userRepository.GetByNameAsync(name);
             if (!(user is null))
             {
-                throw new ServiceException(ErrorCode.user_already_exists, $"user with given namne '{name}' already exist. User name must be unique.");
+                throw new ServiceException(ErrorCode.user_already_exists, $"User with given namne '{name}' already exist. User name must be unique.");
             }
 
             user = new User(id, name, email, role);

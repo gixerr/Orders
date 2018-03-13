@@ -21,7 +21,30 @@ namespace Orders.Infrastructure.Commands
                 throw new ArgumentNullException(nameof(command), $"Commad '{typeof(T).Name} cannot be null.");
             }
 
-            await _context.Resolve<ICommandHandler<T>>().HandleAsync(command);
+            var handler = _context.Resolve<ICommandHandler<T>>();
+
+            if(handler is null)
+            {
+                throw new ArgumentNullException(nameof(command), $"Commad handler '{typeof(T).Name} not found.");
+            }
+            await handler.HandleAsync(command);
+        }
+
+        public async Task<TResult> DispatchAsync<TCommand, TResult>(TCommand command) where TCommand : ICommand
+        {
+            if (command == null)
+            {
+                throw new ArgumentNullException(nameof(command), $"Commad '{typeof(TCommand).Name} cannot be null.");
+            }
+
+            var handler = _context.Resolve<ICommandHandler<TCommand, TResult>>();
+
+            if(handler is null)
+            {
+                throw new ArgumentNullException(nameof(command), $"Commad handler '{typeof(TCommand).Name} not found.");
+            }
+
+            return await handler.HandleAsync(command);
         }
     }
 }

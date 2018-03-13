@@ -14,10 +14,6 @@ namespace Orders.Infrastructure.IoC.Modules
                 .Where(t => t.IsAssignableTo<IService>())
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
-
-            builder.RegisterType<Encrypter>()
-                .As<IEncrypter>()
-                .SingleInstance();
         }
     }
 }

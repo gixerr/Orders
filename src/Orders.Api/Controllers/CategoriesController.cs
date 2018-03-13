@@ -8,7 +8,6 @@ using Orders.Infrastructure.Services.Interfaces;
 
 namespace Orders.Api.Controllers
 {
-    [Route("categories")]
     public class CategoriesController : BaseController
     {
         private readonly ICategoryService _categoryService;

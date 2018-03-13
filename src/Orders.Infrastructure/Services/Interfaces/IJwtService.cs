@@ -4,7 +4,7 @@ using Orders.Infrastructure.Dtos;
 
 namespace Orders.Infrastructure.Services.Interfaces
 {
-    public interface IJwtService
+    public interface IJwtService : IService
     {
          JsonWebTokenDto CreateToken(Guid id, Role role);
     }

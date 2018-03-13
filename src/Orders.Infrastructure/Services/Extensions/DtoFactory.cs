@@ -39,5 +39,15 @@ namespace Orders.Infrastructure.Services.Extensions
         {
             return Mapper.Map<IEnumerable<ItemDto>>(items);
         }
+
+        public static UserDto Dto(this User user)
+        {
+            return Mapper.Map<UserDto>(user);
+        }
+
+        public static IEnumerable<UserDto> Dto(this IEnumerable<User> users)
+        {
+            return Mapper.Map<IEnumerable<UserDto>>(users);
+        }
     }
 }

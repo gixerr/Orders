@@ -1,7 +1,10 @@
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Orders.Infrastructure.Commands.Interfaces;
 using Orders.Infrastructure.Commands.Users;
+using Orders.Infrastructure.Dtos;
 using Orders.Infrastructure.Services.Interfaces;
 
 namespace Orders.Api.Controllers
@@ -15,6 +18,15 @@ namespace Orders.Api.Controllers
             _userService = userService;
         }
 
+        [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> GetAll()
+        {
+            var users = await _userService.GetAllAsync();
+
+            return Ok(users);
+        }
+
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] Register command)
         {
@@ -26,7 +38,9 @@ namespace Orders.Api.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] Login command)
         {
-            return Ok();
+            var token = await CommandDispatcher.DispatchAsync<Login, TokenDto>(command);
+            
+            return Ok(token);
         }
     }
 }

@@ -7,7 +7,6 @@ using Orders.Infrastructure.Services.Interfaces;
 
 namespace Orders.Api.Controllers
 {
-    [Route("items")]
     public class ItemsController : BaseController
     {
         private readonly IItemService _itemService;

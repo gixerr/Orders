@@ -7,7 +7,6 @@ using Orders.Infrastructure.Services.Interfaces;
 
 namespace Orders.Api.Controllers
 {
-    [Route("orders")]
     public class OrdersController : BaseController
     {
         private readonly IOrderService _orderService;
@@ -16,13 +15,13 @@ namespace Orders.Api.Controllers
         {
             _orderService = orderService;
         }
-
+        
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-                var orders = await _orderService.GetAllAsync();
+            var orders = await _orderService.GetAllAsync();
 
-                return Ok(orders);
+            return Ok(orders);
         }
 
         [HttpGet("{id}")]

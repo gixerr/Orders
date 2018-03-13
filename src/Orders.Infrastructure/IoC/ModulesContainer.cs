@@ -4,11 +4,11 @@ using Orders.Infrastructure.IoC.Modules;
 
 namespace Orders.Infrastructure.IoC
 {
-    public class ContainerModule : Autofac.Module
+    public class ModulesContainer : Autofac.Module
     {
         private readonly IConfiguration _configuration;
 
-        public ContainerModule(IConfiguration configuration)
+        public ModulesContainer(IConfiguration configuration)
         {
             _configuration = configuration;
         }
@@ -18,6 +18,7 @@ namespace Orders.Infrastructure.IoC
             builder.RegisterModule<CommandModule>();
             builder.RegisterModule<RepositoryModule>();
             builder.RegisterModule<ServiceModule>();
+            builder.RegisterModule<IdentityModule>();
         }
     }
 }

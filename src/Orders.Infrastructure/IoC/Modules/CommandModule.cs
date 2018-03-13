@@ -13,10 +13,16 @@ namespace Orders.Infrastructure.IoC.Modules
             builder.RegisterAssemblyTypes(assembly)
                 .AsClosedTypesOf(typeof(ICommandHandler<>))
                 .InstancePerLifetimeScope();
+            
+             builder.RegisterAssemblyTypes(assembly)
+                .AsClosedTypesOf(typeof(ICommandHandler<,>))
+                .InstancePerLifetimeScope();
 
             builder.RegisterType<CommandDispatcher>()
                 .As<ICommandDispatcher>()
                 .InstancePerLifetimeScope();
+
+
         }
     }
 }
