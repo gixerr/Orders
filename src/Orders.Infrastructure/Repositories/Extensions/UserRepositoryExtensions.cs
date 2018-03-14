@@ -55,7 +55,7 @@ namespace Orders.Infrastructure.Repositories.Extensions
             return user;
         }
 
-        public static async Task<User> ValidateUserAsync(this IUserRepository userRepository, Guid id, string name, string email, Role role)
+        public static async Task<User> ValidateUserAsync(this IUserRepository userRepository, string name, string email, Role role)
         {
             var user = await userRepository.GetByEmailAsync(email);
             if (!(user is null))
@@ -69,7 +69,7 @@ namespace Orders.Infrastructure.Repositories.Extensions
                 throw new ServiceException(ErrorCode.user_already_exists, $"User with given namne '{name}' already exist. User name must be unique.");
             }
 
-            user = new User(id, name, email, role);
+            user = new User(name, email, role);
             return user;
         }
 

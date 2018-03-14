@@ -8,9 +8,8 @@ namespace Orders.Core.Domain
     public class User : Entity
     {
         protected User() { }
-        public User(Guid id, string name, string email, Role role = Role.User)
+        public User(string name, string email, Role role = Role.User)
         {
-            this.Id = id;
             this.Name = Validate(name);
             this.Email = ValidateEmail(email);
             this.Role = role;

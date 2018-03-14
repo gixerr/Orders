@@ -25,7 +25,7 @@ namespace Orders.Api.Controllers
             return Ok(categories);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("id/{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
             var category = await _categoryService.GetAsync(id);
@@ -33,7 +33,7 @@ namespace Orders.Api.Controllers
             return Ok(category);
         }
 
-        [HttpGet("{name}")]
+        [HttpGet("name/{name}")]
         public async Task<IActionResult> Get(string name)
         {
             var category = await _categoryService.GetAsync(name);
@@ -42,14 +42,14 @@ namespace Orders.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(AddCategory command)
+        public async Task<IActionResult> Post([FromBody] AddCategory command)
         {
             await CommandDispatcher.DispatchAsync(command);
 
             return Created($"categories/{command.Name}", null);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(RemoveCategory command)
         {
             await CommandDispatcher.DispatchAsync(command);

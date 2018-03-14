@@ -30,8 +30,8 @@ namespace Orders.Infrastructure.Services
         public async Task<IEnumerable<OrderDto>> GetAsync(StatusDto status)
             => (await _orderRepository.GetOrFailAsync(status)).Dto();
 
-        public async Task AddAsync(Guid id, string name)
-            => await _orderRepository.AddOrFailAsync(id, name); 
+        public async Task AddAsync(string name)
+            => await _orderRepository.AddOrFailAsync(name); 
 
         public async Task RemoveAsync(Guid id)
             => await _orderRepository.RemoveOrFailAsync(id);

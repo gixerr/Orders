@@ -9,7 +9,7 @@ namespace Orders.Infrastructure.Services.Interfaces
     public interface IUserService : IService
     {
         Task<IEnumerable<UserDto>> GetAllAsync();
-        Task RegisterAsync(Guid id, string name, string email, string password, Role role);
+        Task RegisterAsync(string name, string email, string password, Role role);
         Task<TokenDto> LoginAsync(string email, string password);
     }
 }

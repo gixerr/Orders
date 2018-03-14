@@ -9,7 +9,7 @@ namespace Orders.Infrastructure.Handlers.Users
     {
         public RegisterHandler(IUserService userService) : base(userService) { }
         public async Task HandleAsync(Register command)
-            => await _userService.RegisterAsync(command.Id, command.Name, command.Email, 
+            => await _userService.RegisterAsync(command.Name, command.Email, 
                 command.Password, command.Role);
     }
 }

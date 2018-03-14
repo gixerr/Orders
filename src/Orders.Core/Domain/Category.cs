@@ -11,7 +11,7 @@ namespace Orders.Core.Domain
         {
         }
 
-        public Category(string name) : base()
+        public Category(string name)
         {
             this.Name = Validate(name);
             this.CreatedAt = DateTime.UtcNow;

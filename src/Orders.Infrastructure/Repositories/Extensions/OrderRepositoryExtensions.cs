@@ -56,14 +56,14 @@ namespace Orders.Infrastructure.Repositories.Extensions
             return orders;
         }
 
-        public static async Task AddOrFailAsync(this IOrderRepository orderRepository, Guid id, string name)
+        public static async Task AddOrFailAsync(this IOrderRepository orderRepository, string name)
         {
             var order = await orderRepository.GetAsync(name);
             if (!(order is null))
             {
                 throw new ServiceException(ErrorCode.order_already_exists, $"Order with given name '{name}' already exist. Order name must be unique.");
             }
-            order = new Order(id, name);
+            order = new Order(name);
             await orderRepository.AddAsync(order);
         }
 

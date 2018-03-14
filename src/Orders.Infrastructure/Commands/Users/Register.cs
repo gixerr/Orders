@@ -6,7 +6,6 @@ namespace Orders.Infrastructure.Commands.Users
 {
     public class Register : ICommand
     {
-        public Guid Id { get; } = Guid.NewGuid();
         public string Name { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }

@@ -43,7 +43,7 @@ namespace Orders.Infrastructure.Repositories
         {
             for (int i = 0; i < 10; i++)
             {
-                yield return new Order(Guid.NewGuid(), $"Order-{i+1}");
+                yield return new Order($"Order-{i+1}");
             }
         }
     }

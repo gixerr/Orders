@@ -48,9 +48,9 @@ namespace Orders.Infrastructure.Services
             };
         }
 
-        public async Task RegisterAsync(Guid id, string name, string email, string password, Role role = Role.User)
+        public async Task RegisterAsync(string name, string email, string password, Role role = Role.User)
         {
-            var user = await _userRepository.ValidateUserAsync(id, name, email, role);
+            var user = await _userRepository.ValidateUserAsync(name, email, role);
             user.SetPassword(password, _passwordHasher);
             await _userRepository.AddAsync(user);
         }
