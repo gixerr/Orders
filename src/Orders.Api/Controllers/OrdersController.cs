@@ -24,7 +24,7 @@ namespace Orders.Api.Controllers
             return Ok(orders);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("id/{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
             var order = await _orderService.GetAsync(id);
@@ -32,7 +32,7 @@ namespace Orders.Api.Controllers
             return Ok(order);
         }
 
-        [HttpGet("{name}")]
+        [HttpGet("name/{name}")]
         public async Task<IActionResult> Get(string name)
         {
             var order = await _orderService.GetAsync(name);

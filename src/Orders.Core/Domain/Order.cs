@@ -19,8 +19,9 @@ namespace Orders.Core.Domain
 
         protected Order() { }
 
-        public Order(string name, Status status = Status.Purchased)
+        public Order(Guid id, string name, Status status = Status.Purchased)
         {
+            this.Id = Id;
             this.Name = Validate(name);
             this.CreatedAt = DateTime.UtcNow;
             this.Status = status;
