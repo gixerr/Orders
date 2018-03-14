@@ -36,7 +36,7 @@ namespace Orders.Infrastructure.Repositories.Extensions
         public static async Task<IEnumerable<Item>> GetOrFailAsync(this IItemRepository itemRepository, string name)
         {
             var items = await itemRepository.GetAsync(name);
-            if (items is null)
+            if (items.AreEmpty())
             {
                 throw new ServiceException(ErrorCode.item_not_found, $"Item with given name '{name}' not found.");
             }
@@ -63,5 +63,8 @@ namespace Orders.Infrastructure.Repositories.Extensions
             }
             await itemRepository.RemoveAsync(id);
         }
+
+        private static bool AreEmpty(this IEnumerable<Item> items)
+            => items is null || items.Count() == 0;
     }
 }

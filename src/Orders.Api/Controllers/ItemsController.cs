@@ -24,7 +24,7 @@ namespace Orders.Api.Controllers
             return Ok(items);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("id/{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
             var item = await _itemService.GetAsync(id);
@@ -32,7 +32,7 @@ namespace Orders.Api.Controllers
             return Ok(item);
         }
 
-        [HttpGet("{name}")]
+        [HttpGet("name/{name}")]
         public async Task<IActionResult> Get(string name)
         {
             var items = await _itemService.GetAsync(name);
@@ -41,11 +41,11 @@ namespace Orders.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(AddItem command)
+        public async Task<IActionResult> Post([FromBody] AddItem command)
         {
             await CommandDispatcher.DispatchAsync(command);
 
-            return Created($"items/{command.itemName}", null);
+            return Created($"items/{command.ItemName}", null);
         }
 
         [HttpDelete("{id}")]

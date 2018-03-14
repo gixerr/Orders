@@ -4,8 +4,8 @@ namespace Orders.Infrastructure.Commands.Items
 {
     public class AddItem : ICommand
     {
-        public string itemName { get; set; }
-        public string categoryName { get; set; }
-        public decimal price { get; set; }
+        public string ItemName { get; set; }
+        public string CategoryName { get; set; }
+        public decimal Price { get; set; }
     }
 }
