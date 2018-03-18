@@ -24,6 +24,7 @@ namespace Orders.Infrastructure.IoC
                 {
                     options.SerializerSettings.Formatting = Formatting.Indented;
                 });
+            _services.AddMemoryCache();
             _services.AddJwt();
             _services.AddAuthorization();
 
