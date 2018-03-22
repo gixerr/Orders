@@ -5,11 +5,11 @@ using Orders.Infrastructure.Services.Interfaces;
 
 namespace Orders.Infrastructure.Handlers.Orders
 {
-    public class AddOrderHandler : ServiceHandler, ICommandHandler<AddOrder>
+    public class AddEmptyOrderHandler : ServiceHandler, ICommandHandler<AddEmptyOrder>
     {
-        public AddOrderHandler(IOrderService orderService) : base(orderService) { }
+        public AddEmptyOrderHandler(IOrderService orderService) : base(orderService) { }
 
-        public async Task HandleAsync(AddOrder command)
+        public async Task HandleAsync(AddEmptyOrder command)
             => await _orderService.AddAsync(command.Name);
     }
 }

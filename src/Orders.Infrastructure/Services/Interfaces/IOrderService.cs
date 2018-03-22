@@ -10,6 +10,7 @@ namespace Orders.Infrastructure.Services.Interfaces
         Task<IEnumerable<OrderDto>> GetAllAsync();
         Task<OrderDto> GetAsync(Guid id);
         Task<OrderDto> GetAsync(string name);
+        Task FailIfExistAsync(string name);
         Task<IEnumerable<OrderDto>> GetAsync(StatusDto status);
         Task AddAsync(string name);
         Task RemoveAsync(Guid id);

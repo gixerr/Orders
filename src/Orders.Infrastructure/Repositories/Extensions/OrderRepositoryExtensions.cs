@@ -43,6 +43,7 @@ namespace Orders.Infrastructure.Repositories.Extensions
             return order;
         }
 
+
         public static async Task<IEnumerable<Order>> GetOrFailAsync(this IOrderRepository orderRepository,
             StatusDto statusDto)
         {
@@ -54,6 +55,15 @@ namespace Orders.Infrastructure.Repositories.Extensions
             }
 
             return orders;
+        }
+
+        public static async Task FailIfExistAsync(this IOrderRepository orderRepository, string name)
+        {
+            var order = await orderRepository.GetAsync(name);
+            if (!(order is null))
+            {
+                throw new ServiceException(ErrorCode.order_already_exists, $"Order with given name '{name}' already exist. Order name must be unique.");
+            }
         }
 
         public static async Task AddOrFailAsync(this IOrderRepository orderRepository, string name)

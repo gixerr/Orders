@@ -1,9 +1,8 @@
-using System;
 using Orders.Infrastructure.Commands.Interfaces;
 
 namespace Orders.Infrastructure.Commands.Orders
 {
-    public class AddOrder : ICommand
+    public class CreateOrder : ICommand
     {
         public string Name { get; set; }
     }

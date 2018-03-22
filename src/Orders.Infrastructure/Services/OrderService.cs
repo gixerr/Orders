@@ -29,6 +29,9 @@ namespace Orders.Infrastructure.Services
 
         public async Task<IEnumerable<OrderDto>> GetAsync(StatusDto status)
             => (await _orderRepository.GetOrFailAsync(status)).Dto();
+        
+        public async Task FailIfExistAsync(string name)
+            => await _orderRepository.FailIfExistAsync(name);
 
         public async Task AddAsync(string name)
             => await _orderRepository.AddOrFailAsync(name); 
