@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Orders.Core.Domain;
 using Orders.Infrastructure.Dtos;
 
 namespace Orders.Infrastructure.Services.Interfaces
@@ -12,7 +13,8 @@ namespace Orders.Infrastructure.Services.Interfaces
         Task<OrderDto> GetAsync(string name);
         Task FailIfExistAsync(string name);
         Task<IEnumerable<OrderDto>> GetAsync(StatusDto status);
-        Task AddAsync(string name);
+        Task AddAsync(PreOrder preOrder);
+        Task AddEmptyAsync(string name);
         Task RemoveAsync(Guid id);
     }
 }

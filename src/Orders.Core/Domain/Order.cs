@@ -19,12 +19,22 @@ namespace Orders.Core.Domain
 
         protected Order() { }
 
-        public Order(string name, Status status = Status.Purchased)
+        private Order(PreOrder preOrder) : this(preOrder.Name)
+        {
+            this.Items = preOrder.Items;
+        }
+        private Order(string name, Status status = Status.Purchased)
         {
             this.Name = Validate(name);
             this.CreatedAt = DateTime.UtcNow;
             this.Status = status;
         }
+
+        public static Order Empty(string name)
+            => new Order(name);
+        
+        public static Order FromPreOrder(PreOrder preOrder)
+            => new Order(preOrder);
 
         public IEnumerable<Item> GetItems(string name)
         {
@@ -61,6 +71,8 @@ namespace Orders.Core.Domain
             }
             item.Counter.Decrease();
         }
+
+
     }
 }
 

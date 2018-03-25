@@ -106,7 +106,7 @@ namespace Orders.Tests.Services
             var orderService = new OrderService(_orderRepositoryMock.Object);
             var order = _fixture.Create<Order>();
 
-            await orderService.AddAsync(order.Name);
+            await orderService.AddEmptyAsync(order.Name);
 
             _orderRepositoryMock.Verify(x => x.AddAsync(It.IsAny<Order>()), Times.Once);
         }
@@ -119,7 +119,7 @@ namespace Orders.Tests.Services
             _orderRepositoryMock.Setup(x => x.GetAsync(order.Name)).ReturnsAsync(order);
 
 
-            Func<Task> addOrder = async () => await orderService.AddAsync(order.Name);
+            Func<Task> addOrder = async () => await orderService.AddEmptyAsync(order.Name);
 
             var expectedException = addOrder.ShouldThrow<ServiceException>();
             expectedException.And.ErrorCode.ShouldBeEquivalentTo(ErrorCode.order_already_exists);

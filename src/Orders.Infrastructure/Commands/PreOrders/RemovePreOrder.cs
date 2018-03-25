@@ -1,8 +1,8 @@
 using Orders.Infrastructure.Commands.Interfaces;
 
-namespace Orders.Infrastructure.Commands.Orders
+namespace Orders.Infrastructure.Commands.PreOrders
 {
-    public class CreateOrder : ICommand
+    public class RemovePreOrder : ICommand
     {
         public string Name { get; set; }
     }

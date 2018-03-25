@@ -1,6 +1,7 @@
 using System;
 using AutoMapper;
 using Orders.Core.Domain;
+using Orders.Infrastructure.Commands.PreOrders;
 using Orders.Infrastructure.Dtos;
 
 namespace Orders.Infrastructure.Mappings

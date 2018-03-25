@@ -10,6 +10,6 @@ namespace Orders.Infrastructure.Handlers.Orders
         public AddEmptyOrderHandler(IOrderService orderService) : base(orderService) { }
 
         public async Task HandleAsync(AddEmptyOrder command)
-            => await _orderService.AddAsync(command.Name);
+            => await _orderService.AddEmptyAsync(command.Name);
     }
 }

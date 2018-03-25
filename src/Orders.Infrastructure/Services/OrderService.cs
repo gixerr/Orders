@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Orders.Core.Domain;
 using Orders.Core.Repositories;
 using Orders.Infrastructure.Dtos;
 using Orders.Infrastructure.Repositories.Extensions;
@@ -33,8 +34,11 @@ namespace Orders.Infrastructure.Services
         public async Task FailIfExistAsync(string name)
             => await _orderRepository.FailIfExistAsync(name);
 
-        public async Task AddAsync(string name)
-            => await _orderRepository.AddOrFailAsync(name); 
+        public async Task AddAsync(PreOrder preOrder)
+            => await _orderRepository.AddOrFailAsync(preOrder);
+
+        public async Task AddEmptyAsync(string name)
+            => await _orderRepository.AddEmptyOrFailAsync(name); 
 
         public async Task RemoveAsync(Guid id)
             => await _orderRepository.RemoveOrFailAsync(id);

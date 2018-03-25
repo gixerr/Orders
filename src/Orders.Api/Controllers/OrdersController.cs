@@ -10,37 +10,34 @@ namespace Orders.Api.Controllers
     public class OrdersController : BaseController
     {
         private readonly IOrderService _orderService;
-        private readonly IPreOrderService _preOrderService;
 
-        public OrdersController(ICommandDispatcher commandDispatcher, IOrderService orderService, IPreOrderService preOrderService) 
-            : base(commandDispatcher)
+        public OrdersController(ICommandDispatcher commandDispatcher, IOrderService orderService) : base(commandDispatcher)
         {
-            _preOrderService = preOrderService;
             _orderService = orderService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var orders = await _orderService.GetAllAsync();
+            var orderDtos = await _orderService.GetAllAsync();
 
-            return Ok(orders);
+            return Ok(orderDtos);
         }
 
         [HttpGet("id/{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
-            var order = await _orderService.GetAsync(id);
+            var orderDto = await _orderService.GetAsync(id);
 
-            return Ok(order);
+            return Ok(orderDto);
         }
 
         [HttpGet("name/{name}")]
         public async Task<IActionResult> Get(string name)
         {
-            var order = await _orderService.GetAsync(name);
+            var orderDto = await _orderService.GetAsync(name);
 
-            return Ok(order);
+            return Ok(orderDto);
         }
 
         [HttpPost]
@@ -51,13 +48,6 @@ namespace Orders.Api.Controllers
             return Created($"orders/{command.Name}", null);
         }
 
-        [HttpPost("create")]
-        public async Task<IActionResult> Post([FromBody]CreateOrder command)
-        {
-            await CommandDispatcher.DispatchAsync(command);
-
-            return Ok();
-        }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(RemoveOrder command)

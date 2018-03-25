@@ -5,6 +5,7 @@ namespace Orders.Core.Exceptions
     public class ErrorCode
     {
         //TODO change to readonly props
+        public static string invalid_order => nameof(invalid_order);
         public const string empty_order_name = nameof(empty_order_name);
         public const string empty_category_name = nameof(empty_category_name);
         public const string empty_item_name = nameof(empty_item_name);

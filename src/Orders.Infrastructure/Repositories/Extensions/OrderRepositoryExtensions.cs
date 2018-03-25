@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Orders.Core.Domain;
 using Orders.Core.Exceptions;
@@ -66,14 +67,24 @@ namespace Orders.Infrastructure.Repositories.Extensions
             }
         }
 
-        public static async Task AddOrFailAsync(this IOrderRepository orderRepository, string name)
+        public static async Task AddOrFailAsync(this IOrderRepository orderRepository, PreOrder preOrder)
+        {
+            if (!preOrder.Items.Any())
+            {
+                throw new ServiceException(ErrorCode.invalid_order, $"Oreder must contain items.");
+            }
+            var order = Order.FromPreOrder(preOrder);
+            await orderRepository.AddAsync(order);
+        }
+
+        public static async Task AddEmptyOrFailAsync(this IOrderRepository orderRepository, string name)
         {
             var order = await orderRepository.GetAsync(name);
             if (!(order is null))
             {
                 throw new ServiceException(ErrorCode.order_already_exists, $"Order with given name '{name}' already exist. Order name must be unique.");
             }
-            order = new Order(name);
+            order = Order.Empty(name);
             await orderRepository.AddAsync(order);
         }
 
