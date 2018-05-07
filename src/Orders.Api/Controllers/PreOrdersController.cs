@@ -36,6 +36,7 @@ namespace Orders.Api.Controllers
         [HttpDelete("delete/{name}")]
         public IActionResult Delete(RemovePreOrder command)
         {
+            //TODO create no async CommandDispatcher
             _preOrderService.Remove(command.Name);
 
             return NoContent();

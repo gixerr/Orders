@@ -6,5 +6,6 @@ namespace Orders.Infrastructure.Services.Interfaces
     public interface IPreOrderItemService : IService
     {
          Task AddAsync(Guid itemId, string orderName);
+         void Remove(Guid itemId, string orderName);
     }
 }

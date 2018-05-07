@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Orders.Core.Domain.Extensions;
 using Orders.Core.Exceptions;
 
@@ -7,21 +8,16 @@ namespace Orders.Core.Domain
 {
     public class Order : Entity
     {
-        private ISet<Item> _items = new HashSet<Item>();
         public string Name { get; protected set; }
-        public DateTime CreatedAt { get; protected set; }
+        public DateTime CreatedAt { get; }
         public Status Status { get; protected set; }
-        public IEnumerable<Item> Items
-        {
-            get => _items;
-            protected set => _items = new HashSet<Item>(value);
-        }
+        public IEnumerable<OrderItem> Items { get; set; }
 
         protected Order() { }
 
         private Order(PreOrder preOrder) : this(preOrder.Name)
         {
-            this.Items = preOrder.Items;
+            this.Items = preOrder.Items.Select(x => new OrderItem(x));
         }
         private Order(string name, Status status = Status.Purchased)
         {
@@ -35,44 +31,6 @@ namespace Orders.Core.Domain
         
         public static Order FromPreOrder(PreOrder preOrder)
             => new Order(preOrder);
-
-        public IEnumerable<Item> GetItems(string name)
-        {
-            var items = Items.GetItems(name);
-            if (items is null)
-            {
-                throw new OrdersException(ErrorCode.item_not_found, $"Item with given name '{name}' not found");
-            }
-            return items;
-        }
-
-        public void AddItem(string itemName, decimal price, string categoryName)
-        {
-            var item = Items.GetItem(itemName, categoryName);
-            if (item is null)
-            {
-                _items.Add(new Item(itemName, price, new Category(categoryName)));
-                return;
-            }
-            item.Counter.Increase();
-        }
-
-        public void RemoveItem(string itemName, string categoryName)
-        {
-            var item = Items.GetItem(itemName, categoryName);
-            if (item is null)
-            {
-                throw new OrdersException(ErrorCode.item_not_found, "Unable to remove nonexiting item.");
-            }
-            if (item.Counter.Value is 1)
-            {
-                _items.Remove(item);
-                return;
-            }
-            item.Counter.Decrease();
-        }
-
-
     }
 }
 

@@ -7,13 +7,10 @@ namespace Orders.Core.Domain
 {
     public class PreOrder
     {
-        public PreOrder(string name)
-        {
-            SetName(name);
-        }
-        private ISet<Item> _items = new HashSet<Item>();
+
+        private ISet<PreOrderItem> _items = new HashSet<PreOrderItem>();
         public string Name { get; protected set; }
-        public IEnumerable<Item> Items => _items;
+        public IEnumerable<PreOrderItem> Items => _items;
         private void SetName(string name)
         {
             if (string.IsNullOrEmpty(name))
@@ -24,17 +21,37 @@ namespace Orders.Core.Domain
             this.Name = name;
         }
 
-        public void AddItem(Item item)
+        public PreOrder(string name)
         {
-            var itemToAdd = Items.GetItem(item.Name, item.Category.Name);
+            SetName(name);
+        }
+
+        public void AddItem(PreOrderItem preOrderItem)
+        {
+            var itemToAdd = Items.GetItem(preOrderItem.Id);
             if (itemToAdd is null)
             {
-                _items.Add(item);
+                _items.Add(preOrderItem);
+
                 return;
             }
-            item.Counter.Increase();
+            preOrderItem.Counter.Increase();
         }
-        
 
+        public void RemoveItem(Guid itemId)
+        {
+            var itemToRemove = _items.GetItem(itemId);
+            if (itemToRemove is null)
+            {
+                throw new OrdersException(ErrorCode.item_not_found, $"Item with given id '{itemId}' not found. Unable to remove nonexiting item.");
+            }
+            if (itemToRemove.Counter.Value > 1)
+            {
+                itemToRemove.Counter.Decrease();
+
+                return;
+            }
+            _items.Remove(itemToRemove);
+        }
     }
 }

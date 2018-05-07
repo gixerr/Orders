@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using AutoMapper;
 using Orders.Core.Domain;
 using Orders.Infrastructure.Commands.PreOrders;
@@ -19,9 +20,17 @@ namespace Orders.Infrastructure.Mappings
 
                 cfg.CreateMap<Item, ItemDto>();
 
+                cfg.CreateMap<OrderItem, ItemDto>()
+                    .ForMember(m => m.Price, o => o.MapFrom(s =>
+                        s.UnitPrice));
+
                 cfg.CreateMap<User, UserDto>()
                     .ForMember(m => m.Role, o => o.MapFrom(s => 
                         (RoleDto)Enum.Parse(typeof(RoleDto), s.Role.ToString(), true)));
+                cfg.CreateMap<ItemDto, PreOrderItem>()
+                    .ForMember(m => m.UnitPrice, o => o.MapFrom(s =>
+                        s.Price))
+                    .ForMember(m => m.Counter, o => o.Ignore());
             })
             .CreateMapper();
     }

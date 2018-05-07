@@ -9,7 +9,8 @@ namespace Orders.Infrastructure.Dtos
         public string Name { get; set; }
         public Category Category { get; set; }
         public Counter Counter { get; set; }
-        public decimal Price { get; protected set; }
+        public decimal Price { get; set; }
+        public decimal TotalPrice { get; set; }
         public DateTime CreatedAt { get; set; }
 
     }

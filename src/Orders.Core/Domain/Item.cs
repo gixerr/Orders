@@ -7,7 +7,6 @@ namespace Orders.Core.Domain
     {
         public string Name { get; protected set; }
         public Category Category { get; protected set; }
-        public Counter Counter { get; protected set; } // TODO ICounter?
         public decimal Price { get; protected set; }
         public DateTime CreatedAt { get; protected set; }
 
@@ -19,7 +18,6 @@ namespace Orders.Core.Domain
         {
             this.Name = Validate(name);
             this.Category = Validate(category);
-            this.Counter = new Counter();
             this.Price = Validate(price);
             this.CreatedAt = DateTime.UtcNow;
         }
@@ -41,7 +39,7 @@ namespace Orders.Core.Domain
                 throw new OrdersException(ErrorCode.category_not_found, "Category cannot be empty.");
             }
 
-            return category;
+            return category   ;
         }
     }
 }

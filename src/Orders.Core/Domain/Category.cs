@@ -15,8 +15,6 @@ namespace Orders.Core.Domain
         {
             this.Name = Validate(name);
             this.CreatedAt = DateTime.UtcNow;
-
         }        
-
     }
-}
+}   
