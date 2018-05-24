@@ -10,7 +10,8 @@ namespace Orders.Api.Controllers
     {
         private readonly IPreOrderItemService _preOrderItemService;
 
-        public PreOrderItemsController(ICommandDispatcher commandDispatcher, IPreOrderItemService preOrderItemService) : base(commandDispatcher)
+        public PreOrderItemsController(ICommandDispatcher commandDispatcher, 
+            IPreOrderItemService preOrderItemService) : base(commandDispatcher)
         {
             _preOrderItemService = preOrderItemService;
         }

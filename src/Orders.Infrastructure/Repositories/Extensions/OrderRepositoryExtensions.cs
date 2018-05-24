@@ -88,6 +88,24 @@ namespace Orders.Infrastructure.Repositories.Extensions
             await orderRepository.AddAsync(order);
         }
 
+        public static async Task UpdateOrFailAsync(this IOrderRepository orderRepository, Guid id, string name, Status status, IEnumerable<OrderItem> items)
+        {
+            var order = await orderRepository.GetAsync(id);
+            if (order is null)
+            {
+                throw new ServiceException(ErrorCode.order_not_found, $"Order with given id '{id}' not found.");
+            }
+            order = await orderRepository.GetAsync(name);
+            if (!(order is null))
+            {
+                throw new ServiceException(ErrorCode.order_already_exists, $"Order with given name '{name}' already exist. Order name must be unique.");
+            }
+            order.SetName(name);
+            order.SetStatus(status);
+            order.SetItems(items);
+            await orderRepository.UpdateAsync(id);
+        }
+
         public static async Task RemoveOrFailAsync(this IOrderRepository orderRepository, Guid id)
         {
             var order = await orderRepository.GetAsync(id);

@@ -11,7 +11,7 @@ namespace Orders.Core.Domain
         public string Name { get; protected set; }
         public DateTime CreatedAt { get; }
         public Status Status { get; protected set; }
-        public IEnumerable<OrderItem> Items { get; set; }
+        public IEnumerable<OrderItem> Items { get; protected set; }
 
         protected Order() { }
 
@@ -31,6 +31,15 @@ namespace Orders.Core.Domain
         
         public static Order FromPreOrder(PreOrder preOrder)
             => new Order(preOrder);
+
+        public void SetName(string name)
+            => Name = Validate(name);
+
+        public void SetStatus(Status status)
+            => Status = status;
+        
+        public void SetItems(IEnumerable<OrderItem> items)
+            => Items = items;
     }
 }
 

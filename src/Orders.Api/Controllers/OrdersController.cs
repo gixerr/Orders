@@ -48,6 +48,13 @@ namespace Orders.Api.Controllers
             return Created($"orders/{command.Name}", null);
         }
 
+        [HttpPut]
+        public async Task<IActionResult> Update(UpdateOrder command)
+        {
+            await CommandDispatcher.DispatchAsync(command);
+
+            return NoContent();
+        }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(RemoveOrder command)
