@@ -11,7 +11,5 @@ namespace Orders.Infrastructure.Dtos
         public Counter Counter { get; set; }
         public decimal Price { get; set; }
         public decimal TotalPrice { get; set; }
-        public DateTime CreatedAt { get; set; }
-
     }
 }

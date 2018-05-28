@@ -10,6 +10,8 @@ namespace Orders.Infrastructure.Handlers
         protected readonly IUserService _userService;
         protected readonly IPreOrderService _preOrderService;
         protected readonly IPreOrderItemService _preOrderItemService;
+        protected readonly IOrderItemService _orderItemService;
+
         protected ServiceHandler(IOrderService orderService)
         {
             _orderService = orderService;
@@ -39,6 +41,13 @@ namespace Orders.Infrastructure.Handlers
         {
             _preOrderItemService = preOrderItemService;
         }
+        
+        protected ServiceHandler(IOrderItemService orderItemService)
+        {
+            _orderItemService = orderItemService;
+        }
+        
+        
 
     }
 }

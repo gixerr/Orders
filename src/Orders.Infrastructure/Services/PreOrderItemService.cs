@@ -12,9 +12,8 @@ namespace Orders.Infrastructure.Services
     public class PreOrderItemService : IPreOrderItemService
     {
         private readonly IItemService _itemService;
-
         private readonly IPreOrderService _preOrderService;
-
+        
         public PreOrderItemService(IItemService itemservice, IPreOrderService preOrderService)
         {
             _preOrderService = preOrderService;

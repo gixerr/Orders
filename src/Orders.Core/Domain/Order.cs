@@ -8,16 +8,17 @@ namespace Orders.Core.Domain
 {
     public class Order : Entity
     {
+        private List<OrderItem> _items = new List<OrderItem>();
         public string Name { get; protected set; }
         public DateTime CreatedAt { get; }
         public Status Status { get; protected set; }
-        public IEnumerable<OrderItem> Items { get; protected set; }
+        public IEnumerable<OrderItem> Items => _items;
 
         protected Order() { }
 
         private Order(PreOrder preOrder) : this(preOrder.Name)
         {
-            this.Items = preOrder.Items.Select(x => new OrderItem(x));
+            _items = preOrder.Items.Select(x => new OrderItem(x)).ToList();
         }
         private Order(string name, Status status = Status.Purchased)
         {
@@ -38,8 +39,8 @@ namespace Orders.Core.Domain
         public void SetStatus(Status status)
             => Status = status;
         
-        public void SetItems(IEnumerable<OrderItem> items)
-            => Items = items;
+        public void AddOrderItem(OrderItem orderItem)
+            => _items.Add(orderItem);
     }
 }
 

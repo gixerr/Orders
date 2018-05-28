@@ -27,10 +27,17 @@ namespace Orders.Infrastructure.Mappings
                 cfg.CreateMap<User, UserDto>()
                     .ForMember(m => m.Role, o => o.MapFrom(s => 
                         (RoleDto)Enum.Parse(typeof(RoleDto), s.Role.ToString(), true)));
+
                 cfg.CreateMap<ItemDto, PreOrderItem>()
                     .ForMember(m => m.UnitPrice, o => o.MapFrom(s =>
                         s.Price))
                     .ForMember(m => m.Counter, o => o.Ignore());
+                
+                cfg.CreateMap<ItemDto, OrderItem>()
+                    .ForMember(m => m.UnitPrice, o => o.MapFrom(s =>
+                        s.Price))
+                    .ForMember(m => m.Counter, o => o.Ignore())
+                    .ForMember(m => m.TotalPrice, o => o.Ignore());
             })
             .CreateMapper();
     }

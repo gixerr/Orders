@@ -41,7 +41,7 @@ namespace Orders.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] AddEmptyOrder command)
+        public async Task<IActionResult> Post([FromBody]AddEmptyOrder command)
         {
             await CommandDispatcher.DispatchAsync(command);
 
@@ -49,7 +49,7 @@ namespace Orders.Api.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(UpdateOrder command)
+        public async Task<IActionResult> Update([FromBody]UpdateOrder command)
         {
             await CommandDispatcher.DispatchAsync(command);
 

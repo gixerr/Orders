@@ -4,12 +4,12 @@ namespace Orders.Core.Domain
 {
     public class OrderItem
     {
-        public Guid Id { get; }
-        public string Name { get; }
-        public Category Category { get; }
-        public Counter Counter { get; }
-        public decimal UnitPrice { get; }
-        public decimal TotalPrice { get; }
+        public Guid Id { get; set;}
+        public string Name { get; set; }
+        public Category Category { get; set; }
+        public Counter Counter { get; set; }
+        public decimal UnitPrice { get; set; }
+        public decimal TotalPrice =>  Counter.Value * UnitPrice;
 
         public OrderItem(PreOrderItem preOrderItem)
         {
@@ -18,7 +18,11 @@ namespace Orders.Core.Domain
             this.Category = preOrderItem.Category;
             this.Counter = preOrderItem.Counter;
             this.UnitPrice = preOrderItem.UnitPrice;
-            this.TotalPrice = preOrderItem.TotalPrice;
+        }
+
+        public OrderItem()
+        {
+            Counter = new Counter();
         }
     }
 }

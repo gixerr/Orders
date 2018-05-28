@@ -10,7 +10,5 @@ namespace Orders.Infrastructure.Commands.Orders
         public Guid Id { get; set; }
         public string Name { get; set; }
         public Status Status { get; set; }
-        public IEnumerable<OrderItem> Items { get; set; }
-        
     }
 }

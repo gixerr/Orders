@@ -40,8 +40,8 @@ namespace Orders.Infrastructure.Services
         public async Task AddEmptyAsync(string name)
             => await _orderRepository.AddEmptyOrFailAsync(name);
         
-        public async Task UpdateAsync(Guid id, string name, Status status, IEnumerable<OrderItem> items)
-            => await _orderRepository.UpdateOrFailAsync(id, name, status, items);
+        public async Task UpdateAsync(Guid id, string name, Status status)
+            => await _orderRepository.UpdateOrFailAsync(id, name, status);
 
         public async Task RemoveAsync(Guid id)
             => await _orderRepository.RemoveOrFailAsync(id);
