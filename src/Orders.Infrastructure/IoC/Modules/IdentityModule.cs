@@ -9,7 +9,7 @@ namespace Orders.Infrastructure.IoC.Modules
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<PasswordHasher<User>>()
-                .As<IPasswordHasher<User>>();
+                .As<IPasswordHasher<User>>().SingleInstance();
         }
     }
 }

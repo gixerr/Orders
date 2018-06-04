@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using Orders.Core.Domain;
 using Orders.Infrastructure.Extensions;
 using Orders.Infrastructure.Options;
 
@@ -26,7 +29,13 @@ namespace Orders.Infrastructure.IoC
                 });
             _services.AddMemoryCache();
             _services.AddJwt();
-            _services.AddAuthorization();
+            _services.AddAuthorization(options => 
+                { 
+                    options.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
+                        .RequireAuthenticatedUser()
+                        .RequireRole(Role.Admin.ToString())
+                        .Build(); 
+                });
 
             _services.Configure<JwtOptions>(_configuration.GetSection("jwt"));
 
