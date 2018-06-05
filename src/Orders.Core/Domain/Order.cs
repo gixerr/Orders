@@ -41,7 +41,12 @@ namespace Orders.Core.Domain
         
         public void AddOrderItem(OrderItem orderItem)
             => _items.Add(orderItem);
+
+        public void RemoveOrderItem(OrderItem orderItem)
+            => _items.Remove(orderItem);
+
+        public void ClearOrderItems()
+            => _items.Clear();
     }
 }
-
 //TODO Clear
