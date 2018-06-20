@@ -35,6 +35,8 @@ namespace Orders.Infrastructure.IoC
                         .RequireAuthenticatedUser()
                         .RequireRole(Role.Admin.ToString())
                         .Build(); 
+                    
+                    options.AddPolicy("Test", policyCfg => policyCfg.RequireAuthenticatedUser());
                 });
 
             _services.Configure<JwtOptions>(_configuration.GetSection("jwt"));
