@@ -49,4 +49,3 @@ namespace Orders.Core.Domain
             => _items.Clear();
     }
 }
-//TODO Clear

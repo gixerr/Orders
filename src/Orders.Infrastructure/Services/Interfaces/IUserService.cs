@@ -11,5 +11,6 @@ namespace Orders.Infrastructure.Services.Interfaces
         Task<IEnumerable<UserDto>> GetAllAsync();
         Task RegisterAsync(string name, string email, string password, Role role);
         Task<TokenDto> LoginAsync(string email, string password);
+        Task AssignOrderToUserAsync(Guid orderId, Guid userId);
     }
 }

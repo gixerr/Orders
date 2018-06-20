@@ -16,20 +16,30 @@ namespace Orders.Infrastructure.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IOrderRepository _orderRepository;
         private readonly IPasswordHasher<User> _passwordHasher;
         private readonly IJwtService _jwtService;
 
         public UserService(IPasswordHasher<User> passwordHasher, IUserRepository userRepository,
-            IJwtService jwtService)
+            IOrderRepository orderRepository, IJwtService jwtService)
         {
             _jwtService = jwtService;
             _passwordHasher = passwordHasher;
             _userRepository = userRepository;
-
+            _orderRepository = orderRepository;
         }
 
         public async Task<IEnumerable<UserDto>> GetAllAsync()
          => (await _userRepository.GetAllOrFailAsync()).Dto();
+
+        public async Task AssignOrderToUserAsync(Guid orderId, Guid userId)
+        {
+            var order = await _orderRepository.GetOrFailAsync(orderId);
+            var user = await _userRepository.GetOrFailAsync(userId);
+            
+            order.SetStatus(Status.InProgres);
+            user.AddOrder(order);
+        }
 
         public async Task<TokenDto> LoginAsync(string email, string password)
         {
