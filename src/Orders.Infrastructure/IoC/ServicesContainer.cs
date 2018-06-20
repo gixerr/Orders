@@ -29,15 +29,7 @@ namespace Orders.Infrastructure.IoC
                 });
             _services.AddMemoryCache();
             _services.AddJwt();
-            _services.AddAuthorization(options => 
-                { 
-                    options.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
-                        .RequireAuthenticatedUser()
-                        .RequireRole(Role.Admin.ToString())
-                        .Build(); 
-                    
-                    options.AddPolicy("Test", policyCfg => policyCfg.RequireAuthenticatedUser());
-                });
+            _services.LoadAuthenticationPolicies();
 
             _services.Configure<JwtOptions>(_configuration.GetSection("jwt"));
 

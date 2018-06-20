@@ -1,10 +1,10 @@
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Orders.Infrastructure.Commands.Interfaces;
 using Orders.Infrastructure.Commands.Users;
 using Orders.Infrastructure.Dtos;
+using Orders.Infrastructure.Policies;
 using Orders.Infrastructure.Services.Interfaces;
 
 namespace Orders.Api.Controllers
@@ -19,7 +19,7 @@ namespace Orders.Api.Controllers
         }
 
         [HttpGet]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Policy = Policy.AdminOnly)]
         public async Task<IActionResult> GetAll()
         {
             var users = await _userService.GetAllAsync();
