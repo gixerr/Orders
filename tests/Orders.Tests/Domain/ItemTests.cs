@@ -50,20 +50,11 @@ namespace Orders.Tests.Domain
         [Fact]
         public void passing_null_as_category_should_throw_an_exception()
         {
-            Action createNewItem = () => new Item(name, price, null);
+            Action createNewItem = () => new Item(name, price, (Category)null);
 
             var expectedException = createNewItem.ShouldThrow<OrdersException>();
             expectedException.And.ErrorCode.ShouldBeEquivalentTo(ErrorCode.category_not_found);
             expectedException.And.Message.ShouldBeEquivalentTo("Category cannot be empty.");
-        }
-
-        [Fact]
-        public void new_item_counter_value_should_be_equvalent_to_1()
-        {
-            var item = new Item(name, price, category);
-
-            item.Counter.Should().NotBeNull();
-            item.Counter.Value.ShouldBeEquivalentTo(1);
         }
 
         [Fact]
@@ -88,6 +79,14 @@ namespace Orders.Tests.Domain
             var expectedException = createNewItem.ShouldThrow<OrdersException>();
             expectedException.And.ErrorCode.ShouldBeEquivalentTo(ErrorCode.invalid_price);
             expectedException.And.Message.ShouldBeEquivalentTo($"Given price '{price}' is invalid. Price must be greater then 0.");
+        }
+
+        [Fact]
+        public void new_item_id_should_not_be_empty()
+        {
+            var item = _fixture.Create<Item>();
+
+            item.Id.Should().NotBeEmpty();
         }
     }
 }
