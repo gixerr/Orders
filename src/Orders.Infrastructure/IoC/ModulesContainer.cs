@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Microsoft.Extensions.Configuration;
 using Orders.Infrastructure.IoC.Modules;
+using Orders.Infrastructure.Services.Interfaces;
 
 namespace Orders.Infrastructure.IoC
 {

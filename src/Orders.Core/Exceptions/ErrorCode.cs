@@ -22,6 +22,11 @@ namespace Orders.Core.Exceptions
         public static string invalid_email => nameof(invalid_email);
         public static string invalid_password => nameof(invalid_password);
         public static string invalid_credentials => nameof(invalid_credentials);
+        public static string invalid_guid => nameof(invalid_guid);
+        public static string invalid_user => nameof(invalid_user);
+        public static string token_not_found => nameof(token_not_found);
+        public static string token_revoked => nameof(token_revoked);
+        public static string token_empty => nameof(token_empty);
 
     }
 

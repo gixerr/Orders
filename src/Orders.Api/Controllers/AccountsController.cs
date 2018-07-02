@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Orders.Infrastructure.Commands.Interfaces;
+using Orders.Infrastructure.Commands.RefreshTokens;
 using Orders.Infrastructure.Commands.Users;
 using Orders.Infrastructure.Dtos;
 using Orders.Infrastructure.Policies;
@@ -12,10 +13,13 @@ namespace Orders.Api.Controllers
     public class AccountsController : BaseController
     {
         private readonly IUserService _userService;
+        private readonly IRefreshTokenService _refreshTokenService;
 
-        public AccountsController(ICommandDispatcher commandDispatcher, IUserService userService) : base(commandDispatcher)
+        public AccountsController(ICommandDispatcher commandDispatcher, IUserService userService,
+            IRefreshTokenService refreshTokenService) : base(commandDispatcher)
         {
             _userService = userService;
+            _refreshTokenService = refreshTokenService;
         }
 
         [HttpGet]
@@ -39,8 +43,24 @@ namespace Orders.Api.Controllers
         public async Task<IActionResult> Login([FromBody] Login command)
         {
             var token = await CommandDispatcher.DispatchAsync<Login, TokenDto>(command);
-            
+
             return Ok(token);
+        }
+
+        [HttpPost("tokens/refresh")]
+        public IActionResult RefreshAccessToken([FromBody] RefreshAccessToken command)
+        {
+            var token = _refreshTokenService.RefreshAccessToken(command.RefreshToken);
+
+            return Ok(token);
+        }
+
+        [HttpPost("tokens/revoke")]
+        public IActionResult RevokeRefreshToken([FromBody] RevokeRefreshToken command)
+        {
+            _refreshTokenService.RevokeRefreshToken(command.RefreshToken);
+
+            return NoContent();
         }
     }
 }

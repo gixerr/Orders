@@ -16,19 +16,18 @@ namespace Orders.Infrastructure.Services
     {
         private readonly JwtOptions _options;
         private readonly SigningCredentials _signingCredentials;
-        private readonly SecurityKey _securityKey;
         private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
 
         public JwtService(IOptions<JwtOptions> options)
         {
             _options = options.Value;
-            _securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey));
-            _signingCredentials = new SigningCredentials(_securityKey, SecurityAlgorithms.HmacSha256);
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey));
+            _signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
         }
         public JsonWebTokenDto CreateToken(Guid userId, Role role)
         {
             var now = DateTime.UtcNow;
-            var claims = new Claim[]
+            var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
                 new Claim(JwtRegisteredClaimNames.UniqueName, userId.ToString()),

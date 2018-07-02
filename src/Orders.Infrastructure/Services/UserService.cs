@@ -19,11 +19,13 @@ namespace Orders.Infrastructure.Services
         private readonly IOrderRepository _orderRepository;
         private readonly IPasswordHasher<User> _passwordHasher;
         private readonly IJwtService _jwtService;
+        private readonly IRefreshTokenService _refreshTokenService;
 
         public UserService(IPasswordHasher<User> passwordHasher, IUserRepository userRepository,
-            IOrderRepository orderRepository, IJwtService jwtService)
+            IOrderRepository orderRepository, IJwtService jwtService, IRefreshTokenService refreshTokenService)
         {
             _jwtService = jwtService;
+            _refreshTokenService = refreshTokenService;
             _passwordHasher = passwordHasher;
             _userRepository = userRepository;
             _orderRepository = orderRepository;
@@ -49,10 +51,12 @@ namespace Orders.Infrastructure.Services
                 throw new ServiceException(ErrorCode.invalid_credentials, "Invalid credentials");
             }
             var jwt = _jwtService.CreateToken(user.Id, user.Role);
-
+            var refreshToken = _refreshTokenService.Create(user, Guid.NewGuid());
+            _refreshTokenService.Add(refreshToken);
             return new TokenDto
             {
                 AccessToken = jwt.AccessToken,
+                RefreshToken = refreshToken.Token,
                 Expires = jwt.Expires,
                 Role = user.Role
             };
