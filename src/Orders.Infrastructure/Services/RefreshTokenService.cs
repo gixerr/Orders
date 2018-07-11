@@ -65,7 +65,7 @@ namespace Orders.Infrastructure.Services
             }
             if (refreshToken.Revoked)
             {
-                throw new ServiceException(ErrorCode.token_revoked, "Refreshing token failed. Token was revoked .");
+                throw new ServiceException(ErrorCode.token_revoked, "Refreshing token failed. Token was revoked.");
             }
 
             var jwt = _jwtService.CreateToken(refreshToken.UserId, refreshToken.UserRole);

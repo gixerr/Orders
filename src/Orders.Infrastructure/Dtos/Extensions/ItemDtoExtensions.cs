@@ -6,8 +6,8 @@ namespace Orders.Infrastructure.Dtos.Extensions
 {
     public static class ItemDtoExtensions
     {
-        private static readonly IMapper mapper = AutoMapperConfig.GetMapper();
+        private static readonly IMapper Mapper = AutoMapperConfig.GetMapper();
         public static PreOrderItem ToPreOrderItem(this ItemDto itemDto)
-            => mapper.Map<PreOrderItem>(itemDto);
+            => Mapper.Map<PreOrderItem>(itemDto);
     }
 }
