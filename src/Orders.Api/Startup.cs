@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Orders.Api.Framework;
+using Orders.Infrastructure.MongoDb;
 
 namespace Orders.Api
 {
@@ -37,7 +38,7 @@ namespace Orders.Api
             app.UseOrdersExceptionHandler();
             app.UseStaticFiles();
             app.UseMvc();
-            
+            MongoConfigurator.Initialize();
         }
     }
 }

@@ -30,9 +30,7 @@ namespace Orders.Infrastructure.IoC
             _services.AddMemoryCache();
             _services.AddJwt();
             _services.LoadAuthenticationPolicies();
-
-            _services.Configure<JwtOptions>(_configuration.GetSection("jwt"));
-
+            _services.LoadOptions(_configuration);
             return _services;
         }
     }
