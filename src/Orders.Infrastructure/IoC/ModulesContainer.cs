@@ -21,6 +21,7 @@ namespace Orders.Infrastructure.IoC
             builder.RegisterModule<MongoModule>();
             builder.RegisterModule<ServiceModule>();
             builder.RegisterModule<IdentityModule>();
+            builder.RegisterModule(new SettingsModule(_configuration));
         }
     }
 }

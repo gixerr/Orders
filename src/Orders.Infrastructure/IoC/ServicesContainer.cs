@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Orders.Core.Domain;
 using Orders.Infrastructure.Extensions;
-using Orders.Infrastructure.Options;
+using Orders.Infrastructure.Jwt;
 
 namespace Orders.Infrastructure.IoC
 {

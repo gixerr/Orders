@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Orders.Core.Domain;
 using Orders.Infrastructure.MongoDb;
-using Orders.Infrastructure.Options;
+using Orders.Infrastructure.Jwt;
 using Orders.Infrastructure.Policies;
 
 namespace Orders.Infrastructure.Extensions
@@ -21,7 +21,7 @@ namespace Orders.Infrastructure.Extensions
                 configuration = serviceProvider.GetService<IConfiguration>();
             }
             var section = configuration.GetSection("jwt");
-            var options = new JwtOptions();
+            var options = new JwtSettings();
             section.Bind(options);
             services.AddAuthentication()
                 .AddJwtBearer(cfg =>
@@ -54,8 +54,8 @@ namespace Orders.Infrastructure.Extensions
 
         public static void LoadOptions(this IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<JwtOptions>(configuration.GetSection("jwt"));
-            services.Configure<MongoSettings>(configuration.GetSection("mongoDb"));
+            services.Configure<JwtSettings>(configuration.GetSection("jwt"));
+            services.Configure<MongoSettings>(configuration.GetSection("mongo"));
         }
     }
 }

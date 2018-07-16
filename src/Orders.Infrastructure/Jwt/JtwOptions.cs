@@ -1,6 +1,6 @@
-namespace Orders.Infrastructure.Options
+namespace Orders.Infrastructure.Jwt
 {
-    public class JwtOptions
+    public class JwtSettings
     {
         public string SecretKey { get; set; }
         public string Issuer { get; set; }
