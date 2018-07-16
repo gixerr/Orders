@@ -1,6 +1,6 @@
 ﻿namespace Orders.Core.Repositories
 {
-    public interface IMongoRepository
+    public interface IMongoRepository : IRepository
     {
         //marker interface
     }
