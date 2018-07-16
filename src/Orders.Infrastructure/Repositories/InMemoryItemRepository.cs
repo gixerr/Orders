@@ -26,7 +26,7 @@ namespace Orders.Infrastructure.Repositories
             await Task.CompletedTask;
         }
 
-        public async Task UpdateAsync(Guid id)
+        public async Task UpdateAsync(Item item)
         {
             await Task.CompletedTask;
         }
@@ -42,12 +42,12 @@ namespace Orders.Infrastructure.Repositories
             {
                 if (i < 5)
                 {
-                    yield return new Item($"Item-{i + 1}", i+7,  InMemoryCategoryRepository.Categories[i]);
+                    yield return new Item($"Item-{i + 1}", i + 7, InMemoryCategoryRepository.Categories[i]);
                     continue;
                 }
-                yield return new Item($"Item-{i - 4}", i+7, InMemoryCategoryRepository.Categories[i]);
+
+                yield return new Item($"Item-{i - 4}", i + 7, InMemoryCategoryRepository.Categories[i]);
             }
         }
-
     }
 }

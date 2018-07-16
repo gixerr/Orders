@@ -11,7 +11,7 @@ namespace Orders.Core.Repositories
         Task<Item> GetAsync(Guid id);
         Task<IEnumerable<Item>> GetAsync(string name);
         Task AddAsync(Item item);
-        Task UpdateAsync(Guid id);
+        Task UpdateAsync(Item item);
         Task RemoveAsync(Guid id);
     }
 }
