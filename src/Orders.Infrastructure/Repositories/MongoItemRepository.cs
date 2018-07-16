@@ -23,8 +23,7 @@ namespace Orders.Infrastructure.Repositories
             => await Items.AsQueryable().FirstOrDefaultAsync(i => i.Id == id);
 
         public async Task<IEnumerable<Item>> GetAsync(string name)
-            => await Items.AsQueryable().Where(i 
-                => string.Equals(i.Name, name, StringComparison.InvariantCultureIgnoreCase)).ToListAsync();
+            => await Items.AsQueryable().Where(i => i.Name.ToLowerInvariant() == name.ToLowerInvariant()).ToListAsync();
 
         public async Task AddAsync(Item item)
             => await Items.InsertOneAsync(item);

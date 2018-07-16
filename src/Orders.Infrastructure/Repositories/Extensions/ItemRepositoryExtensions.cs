@@ -65,6 +65,6 @@ namespace Orders.Infrastructure.Repositories.Extensions
         }
 
         private static bool AreEmpty(this IEnumerable<Item> items)
-            => items is null || items.Count() == 0;
+            => items is null || !items.Any();
     }
 }
