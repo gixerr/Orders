@@ -10,7 +10,8 @@ namespace Orders.Infrastructure.Repositories
 {
     public class InMemoryUserRepository : IUserRepository
     {
-        private static List<User> _users = InitializeUsers().ToList();
+        private static List<User> _users = new List<User>();
+
         public async Task<IEnumerable<User>> GetAllAsync()
             => await Task.FromResult(_users);
 
@@ -38,16 +39,6 @@ namespace Orders.Infrastructure.Repositories
         {
             _users.Remove(user);
             await Task.CompletedTask;
-        }
-
-        private static IEnumerable<User> InitializeUsers()
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                var user = new User($"User-{i+1}", $"User-{i+1}@email.com");
-                user.SetPassword($"secret{i+1}", new PasswordHasher<User>());
-                yield return user;
-            }
         }
     }
 }

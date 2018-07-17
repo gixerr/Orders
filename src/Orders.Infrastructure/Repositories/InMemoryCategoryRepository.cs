@@ -26,7 +26,7 @@ namespace Orders.Infrastructure.Repositories
             await Task.CompletedTask;
         }
 
-        public async Task UpdateAsync(Guid id)
+        public async Task UpdateAsync(Category category)
         {
             await Task.CompletedTask;
         }

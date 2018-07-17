@@ -11,7 +11,7 @@ namespace Orders.Core.Repositories
         Task<Category> GetAsync(Guid id);
         Task<Category> GetAsync(string name);
         Task AddAsync(Category category);
-        Task UpdateAsync(Guid id);
+        Task UpdateAsync(Category category);
         Task RemoveAsync(Guid id);
     }
 }

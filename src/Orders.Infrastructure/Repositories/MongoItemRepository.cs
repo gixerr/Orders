@@ -11,6 +11,8 @@ namespace Orders.Infrastructure.Repositories
     public class MongoItemRepository : IItemRepository, IMongoRepository
     {
         private readonly IMongoDatabase _mongoDb;
+        private IMongoCollection<Item> Items => _mongoDb.GetCollection<Item>("Items");
+        
         public MongoItemRepository(IMongoDatabase mongoDb)
         {
             _mongoDb = mongoDb;
@@ -34,6 +36,5 @@ namespace Orders.Infrastructure.Repositories
         public async Task RemoveAsync(Guid id)
             => await Items.DeleteOneAsync(i => i.Id == id);
 
-        private IMongoCollection<Item> Items => _mongoDb.GetCollection<Item>("Items");
     }
 }
