@@ -9,7 +9,7 @@ namespace Orders.Infrastructure.Repositories
 {
     public class InMemoryItemRepository : IItemRepository
     {
-        private static List<Item> _items = InitializeItems().ToList();
+        private static List<Item> _items = new List<Item>();
 
         public async Task<IEnumerable<Item>> GetAllAsync()
             => await Task.FromResult(_items);
@@ -34,20 +34,6 @@ namespace Orders.Infrastructure.Repositories
         public async Task RemoveAsync(Guid id)
         {
             _items.Remove(await GetAsync(id));
-        }
-
-        private static IEnumerable<Item> InitializeItems()
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                if (i < 5)
-                {
-                    yield return new Item($"Item-{i + 1}", i + 7, InMemoryCategoryRepository.Categories[i]);
-                    continue;
-                }
-
-                yield return new Item($"Item-{i - 4}", i + 7, InMemoryCategoryRepository.Categories[i]);
-            }
         }
     }
 }

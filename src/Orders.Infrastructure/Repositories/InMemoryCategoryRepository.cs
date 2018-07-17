@@ -9,8 +9,7 @@ namespace Orders.Infrastructure.Repositories
 {
     public class InMemoryCategoryRepository : ICategoryRepository
     {
-        private static List<Category> _categories = InitializeCategories().ToList();
-        public static List<Category> Categories { get; } = _categories;
+        private static List<Category> _categories = new List<Category>();
 
         public async Task<IEnumerable<Category>> GetAllAsync() 
             => await Task.FromResult(_categories);
@@ -36,14 +35,5 @@ namespace Orders.Infrastructure.Repositories
         {
             _categories.Remove(await GetAsync(id));
         }
-
-        private static IEnumerable<Category> InitializeCategories()
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                yield return new Category($"Category-{i+1}");
-            }
-        }
-
     }
 }

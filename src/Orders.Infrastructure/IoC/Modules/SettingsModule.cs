@@ -2,6 +2,7 @@
 using Autofac;
 using Microsoft.Extensions.Configuration;
 using Orders.Infrastructure.MongoDb;
+using Orders.Infrastructure.Settings;
 
 namespace Orders.Infrastructure.IoC.Modules
 {
@@ -19,6 +20,10 @@ namespace Orders.Infrastructure.IoC.Modules
             var mongoSettings = new MongoSettings();
             _configuration.GetSection("mongo").Bind(mongoSettings);
             builder.RegisterInstance(mongoSettings).SingleInstance();
+
+            var dataSettings = new DataSettings();
+            _configuration.GetSection("data").Bind(dataSettings);
+            builder.RegisterInstance(dataSettings).SingleInstance();
         }
     }
 }

@@ -7,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Orders.Api.Framework;
 using Orders.Infrastructure.MongoDb;
+using Orders.Infrastructure.Services.Interfaces;
+using Orders.Infrastructure.Settings;
 
 namespace Orders.Api
 {
@@ -39,6 +41,9 @@ namespace Orders.Api
             app.UseStaticFiles();
             app.UseMvc();
             MongoConfigurator.Initialize();
+            var dataSettings = app.ApplicationServices.GetService<DataSettings>();
+            var dataInitializer = app.ApplicationServices.GetService<IDataInitializer>();
+            dataInitializer.InitializeData(dataSettings);
         }
     }
 }

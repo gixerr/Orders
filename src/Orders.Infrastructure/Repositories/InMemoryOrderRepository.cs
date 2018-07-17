@@ -9,7 +9,7 @@ namespace Orders.Infrastructure.Repositories
 {
     public class InMemoryOrderRepository : IOrderRepository
     {
-        private static List<Order> _orders = InitializeOrders().ToList();
+        private static List<Order> _orders = new List<Order>();
 
         public async Task<IEnumerable<Order>> GetAllAsync()
             => await Task.FromResult(_orders);
@@ -37,14 +37,6 @@ namespace Orders.Infrastructure.Repositories
         public async Task RemoveAsync(Guid id)
         {
             _orders.Remove(await GetAsync(id));
-        }
-
-        private static IEnumerable<Order> InitializeOrders()
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                yield return Order.Empty($"Order-{i+1}");
-            }
         }
     }
 }
