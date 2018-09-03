@@ -1,0 +1,6 @@
+@echo Starting Oredes API...
+@echo off
+call publish.bat
+@echo Building docker image...
+call BuildDocker.bat
+call docker-compose up -d

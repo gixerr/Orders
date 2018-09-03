@@ -1,0 +1,3 @@
+@echo Publishing...
+@echo off
+dotnet publish ../src/Orders.Api -c Release -o ./bin/Docker

@@ -1,3 +1,0 @@
-#!/bin/bash
-echo Starting publish...
-dotnet publish ../src/Orders.Api -c Release -o ./bin/Docker 

@@ -1,0 +1,20 @@
+version: "2"
+
+services:
+  api: 
+    image: orders.api
+    ports:
+      - 5000:5000
+    networks:
+      - orders-network
+
+  mongodb:
+    image: mongo
+    ports:
+      - 27017:27017
+    networks:
+      - orders-network
+    
+networks: 
+  orders-network:
+    driver: bridge
